@@ -1,10 +1,15 @@
 import React from "react";
 import styles from "./Home.module.scss";
+import Purple from "../../components/purple/Purple.tsx";
+import Red from "../../components/red/Red.tsx";
+import Blue from "../../components/blue/Blue.tsx";
 
 const Home: React.FC = () => {
   return (
     <div className={styles.container}>
-      <h1>Home Page</h1>
+      <Purple />
+      <Red />
+      <Blue />
     </div>
   );
 };
