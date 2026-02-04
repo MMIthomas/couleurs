@@ -1,0 +1,23 @@
+$purple-main: #7E3FE0;
+
+@font-face {
+  font-family: 'Hind';
+  src: url('/fonts/Hind/Hind-Variable.ttf') format('truetype');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+.purple {
+  background-color: $purple-main;
+  min-height: 100dvh;
+  width: 100%;
+  padding: 4rem;
+
+  &__title {
+    color: #fff;
+    font-size: 10rem;
+    font-family: 'Hind', sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+}
