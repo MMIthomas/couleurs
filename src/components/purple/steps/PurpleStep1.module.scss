@@ -1,0 +1,47 @@
+$purple-main: #7E3FE0;
+
+.purple__title {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &__wrapper {
+        color: #fff;
+
+        &__top {
+            text-align: center;
+            display: block;
+            font-size: 3rem;
+            overflow: hidden;
+
+            span {
+                display: block;
+            }
+        }
+
+        &__text {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            overflow: hidden;
+
+            &__left {
+                text-align: left;
+                font-size: 2rem;
+                font-weight: 800;
+                font-family: "Hind", sans-serif;
+                transform: translateX(40px);
+            }
+
+            &__right {
+                text-align: right;
+                font-size: 20rem;
+                font-family: 'Hind', sans-serif;
+                font-weight: 900;
+                text-transform: uppercase;
+                line-height: 0.8;
+            }
+        }
+    }
+}
