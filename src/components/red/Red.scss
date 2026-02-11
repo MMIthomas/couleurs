@@ -1,11 +1,15 @@
 $red-main: #DB3B3B;
 $red-dark: #7B2B2B;
+$red-light: #FF6B6B;
 $accent: #ffffff;
 $black-dark: #1A1A1A;
 
 .redContainer {
-  background-color: $accent;
+  background: linear-gradient(135deg, #fafafa 0%, #ffffff 50%, #fff5f5 100%);
   max-width: 100vw;
+  min-height: 500vh;
+  overflow-y: scroll;
+  position: relative;
 }
 
 .horizontal {
@@ -13,6 +17,8 @@ $black-dark: #1A1A1A;
   height: 100vh;
   display: flex;
   align-items: center;
+  justify-content: center;
+  position: relative;
 }
 
 @font-face {
@@ -57,21 +63,222 @@ $black-dark: #1A1A1A;
   font-style: normal;
 }
 
+.container {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 10vw;
+  width: 400vw;
+}
+
 .horizontalText {
   display: flex;
   width: max-content;
   white-space: nowrap;
   gap: 4vw;
+  position: relative;
+  z-index: 10;
+  mix-blend-mode: normal;
 }
 
 .headingXL {
-  font-size: clamp(6rem, 10vw, 40rem);
+  font-size: clamp(6rem, 12vw, 50rem);
   font-weight: 600;
   font-family: "Amoria", sans-serif;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
 }
 
 .highlight {
   color: $red-main;
-  font-weight: lighter;
+  font-family: "Amoria", sans-serif;
+  font-weight: 900;
   font-style: italic;
+  position: relative;
+}
+
+
+.media-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.scrollImg,
+.scrollVideo {
+  position: absolute;
+  object-fit: cover;
+  border-radius: 3vw;
+  pointer-events: none;
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.15),
+    0 8px 24px rgba(219, 59, 59, 0.1);
+  transition: transform 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 3vw;
+    padding: 1px;
+    background: linear-gradient(135deg, 
+      rgba(255, 255, 255, 0.5) 0%, 
+      rgba(219, 59, 59, 0.2) 50%,
+      rgba(255, 255, 255, 0.5) 100%
+    );
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+}
+
+.img-spiderman {
+  left: 55%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22vw;
+  height: 22vw;
+  z-index: 6;
+  filter: saturate(1.1) contrast(1.05);
+}
+
+.img-dexter1 {
+  left: 25%;
+  top: 8%;
+  width: 16vw;
+  height: 16vw;
+  z-index: 5;
+  filter: saturate(1.15);
+}
+
+.img-dexter2 {
+  left: 75%;
+  bottom: 8%;
+  width: 14vw;
+  height: 14vw;
+  z-index: 4;
+  filter: saturate(1.1);
+}
+
+.video-rose {
+  left: 40%;
+  top: 15%;
+  width: 12vw;
+  height: 12vw;
+  z-index: 7;
+  border-radius: 3vw;
+  filter: saturate(1.2) brightness(1.05);
+}
+
+@media (max-width: 1400px) {
+  .headingXL {
+    font-size: clamp(5rem, 10vw, 35rem);
+  }
+
+  .img-spiderman {
+    width: 24vw;
+    height: 24vw;
+    left: 53%;
+  }
+
+  .img-dexter1 {
+    width: 18vw;
+    height: 18vw;
+    left: 22%;
+  }
+
+  .img-dexter2 {
+    width: 16vw;
+    height: 16vw;
+    left: 73%;
+  }
+
+  .video-rose {
+    width: 14vw;
+    height: 14vw;
+    left: 38%;
+  }
+}
+
+@media (max-width: 1024px) {
+  .headingXL {
+    font-size: clamp(4rem, 8vw, 25rem);
+  }
+
+  .container {
+    padding: 0 5vw;
+  }
+
+  .img-spiderman,
+  .img-dexter1,
+  .img-dexter2,
+  .video-rose {
+    width: 18vw;
+    height: 18vw;
+  }
+
+  .img-spiderman {
+    left: 50%;
+  }
+
+  .img-dexter1 {
+    left: 18%;
+    top: 10%;
+  }
+
+  .img-dexter2 {
+    left: 70%;
+    bottom: 10%;
+  }
+
+  .video-rose {
+    left: 35%;
+    top: 18%;
+  }
+}
+
+@media (max-width: 768px) {
+  .headingXL {
+    font-size: clamp(3rem, 7vw, 18rem);
+  }
+
+  .scrollImg,
+  .scrollVideo {
+    border-radius: 4vw;
+  }
+
+  .img-spiderman,
+  .img-dexter1,
+  .img-dexter2,
+  .video-rose {
+    width: 12vw;
+    height: 12vw;
+  }
+
+  .img-spiderman {
+    left: 48%;
+  }
+
+  .img-dexter1 {
+    left: 15%;
+    top: 12%;
+  }
+
+  .img-dexter2 {
+    left: 68%;
+    bottom: 12%;
+  }
+
+  .video-rose {
+    left: 32%;
+    top: 20%;
+  }
+
 }
