@@ -1,4 +1,4 @@
-import "./red.scss";
+import "./Red.scss";
 import { useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -14,7 +14,7 @@ export default function Red() {
 
     const split = SplitText.create(text, { type: "chars,words" });
 
-    const container = document.querySelector('.container');
+    const container = document.querySelector(".container");
     if (!container) return;
     gsap.set(container, { xPercent: 100 });
     const scrollTween = gsap.to(container, {
@@ -74,7 +74,8 @@ export default function Red() {
       <section className="horizontal">
         <div className="container">
           <h3 className="horizontalText headingXL">
-            Le <span className="highlight">Rouge</span> a toujours été <span className="highlight">important</span>.
+            Le <span className="highlight">Rouge</span> a toujours été{" "}
+            <span className="highlight">important</span>.
           </h3>
           <div className="imagesWrapper">
             <img src="/red/spiderman.jpg" alt="img1" className="scrollImg img1" />

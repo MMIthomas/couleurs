@@ -9,15 +9,20 @@ $purple-main: #7E3FE0;
 
 .purple {
   background-color: $purple-main;
-  min-height: 100dvh;
+  min-height: 400dvh;
   width: 100%;
   padding: 4rem;
+  position: relative;
 
   &__title {
-    color: #fff;
-    font-size: 10rem;
-    font-family: 'Hind', sans-serif;
-    font-weight: 800;
-    text-transform: uppercase;
+    overflow: hidden;
+    h2 {
+      color: #fff;
+      font-size: 10rem;
+      font-family: 'Hind', sans-serif;
+      font-weight: 800;
+      text-transform: uppercase;
+      line-height: 1;
+    }
   }
 }
