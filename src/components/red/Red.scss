@@ -5,6 +5,7 @@ $black-dark: #1A1A1A;
 
 .redContainer {
   background-color: $accent;
+  max-width: 100vw;
 }
 
 .horizontal {
@@ -64,9 +65,8 @@ $black-dark: #1A1A1A;
 }
 
 .headingXL {
-  font-size: clamp(2rem, 10vw, 12rem);
+  font-size: clamp(6rem, 10vw, 40rem);
   font-weight: 600;
-  line-height: 1.1;
   font-family: "Amoria", sans-serif;
 }
 

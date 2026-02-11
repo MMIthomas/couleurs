@@ -44,6 +44,25 @@ export default function Red() {
       });
     });
 
+    const images = document.querySelectorAll('.scrollImg');
+    images.forEach((img) => {
+      gsap.fromTo(
+        img,
+        { y: gsap.utils.random(-200, 200) },
+        {
+          y: gsap.utils.random(200, 400),
+          ease: 'none',
+          scrollTrigger: {
+            trigger: wrapper,
+            start: 'left 100%',
+            end: 'left 30%',
+            scrub: true,
+            containerAnimation: scrollTween,
+          },
+        }
+      );
+    });
+
     return () => {
       ScrollTrigger.getAll().forEach((st) => st.kill());
       if (split && split.revert) split.revert();
@@ -57,6 +76,12 @@ export default function Red() {
           <h3 className="horizontalText headingXL">
             Le <span className="highlight">Rouge</span> a toujours été <span className="highlight">important</span>.
           </h3>
+          <div className="imagesWrapper">
+            <img src="/red/spiderman.jpg" alt="img1" className="scrollImg img1" />
+            <img src="/red/img2.jpg" alt="img2" className="scrollImg img2" />
+            <img src="/red/img3.jpg" alt="img3" className="scrollImg img3" />
+            <img src="/red/img4.jpg" alt="img4" className="scrollImg img4" />
+          </div>
         </div>
       </section>
     </main>
