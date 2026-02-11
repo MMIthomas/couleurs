@@ -85,7 +85,7 @@ export default function Red() {
         dexter1,
         { 
           x: -300, 
-          y: -250, 
+          y: 0, 
           rotation: -20,
           skewX: 10,
           scale: 0.7,
@@ -109,7 +109,6 @@ export default function Red() {
         }
       );
 
-  // Pulse animation supprimée pour Dexter1
     }
 
     const dexter2 = document.querySelector('.img-dexter2');
@@ -117,8 +116,8 @@ export default function Red() {
       gsap.fromTo(
         dexter2,
         { 
-          x: 350, 
-          y: -300, 
+          x: 600, 
+          y: -30, 
           rotation: 30,
           scale: 0.5,
           autoAlpha: 0 
