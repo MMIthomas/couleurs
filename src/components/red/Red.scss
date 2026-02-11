@@ -1,4 +1,13 @@
-.Horizontal {
+$red-main: #DB3B3B;
+$red-dark: #7B2B2B;
+$accent: #ffffff;
+$black-dark: #1A1A1A;
+
+.redContainer {
+  background-color: $accent;
+}
+
+.horizontal {
   overflow: hidden;
   height: 100vh;
   display: flex;
@@ -6,23 +15,63 @@
 }
 
 @font-face {
-  font-family: 'Amoria';
-  src: url('../../../public/fonts/Amoria/Amoria.otf') format('opentype');
+  font-family: "StoneIron";
+  src: url("/fonts/StoneIron/StoneIron-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "StoneIron";
+  src: url("/fonts/StoneIron/StoneIron-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "StoneIron";
+  src: url("/fonts/StoneIron/StoneIron-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "StoneIron";
+  src: url("/fonts/StoneIron/StoneIron-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "StoneIron";
+  src: url("/fonts/StoneIron/StoneIron-Semibold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Amoria";
+  src: url("/fonts/Amoria/Amoria.otf") format("opentype");
   font-weight: normal;
   font-style: normal;
 }
 
-.Horizontal__text {
+.horizontalText {
   display: flex;
   width: max-content;
   white-space: nowrap;
   gap: 4vw;
-  padding-left: 100vw;
 }
 
-.heading-xl {
+.headingXL {
   font-size: clamp(2rem, 10vw, 12rem);
   font-weight: 600;
   line-height: 1.1;
-  font-family: 'Amoria', sans-serif;
+  font-family: "Amoria", sans-serif;
+}
+
+.highlight {
+  color: $red-main;
+  font-weight: lighter;
+  font-style: italic;
 }

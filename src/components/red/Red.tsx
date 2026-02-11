@@ -8,17 +8,17 @@ gsap.registerPlugin(SplitText, ScrollTrigger);
 
 export default function Red() {
   useEffect(() => {
-    const wrapper = document.querySelector(".Horizontal");
-    const text = document.querySelector(".Horizontal__text");
+    const wrapper = document.querySelector(".horizontal");
+    const text = document.querySelector(".horizontalText");
     if (!wrapper || !text) return;
-
 
     const split = SplitText.create(text, { type: "chars,words" });
 
     const container = document.querySelector('.container');
     if (!container) return;
+    gsap.set(container, { xPercent: 100 });
     const scrollTween = gsap.to(container, {
-      xPercent: -80,
+      xPercent: -100,
       ease: "none",
       scrollTrigger: {
         trigger: wrapper,
@@ -51,14 +51,14 @@ export default function Red() {
   }, []);
 
   return (
-    <div>
-      <section className="Horizontal">
+    <main className="redContainer">
+      <section className="horizontal">
         <div className="container">
-          <h3 className="Horizontal__text heading-xl">
-            Le rouge a toujours 
+          <h3 className="horizontalText headingXL">
+            Le <span className="highlight">Rouge</span> a toujours été <span className="highlight">important</span>.
           </h3>
         </div>
       </section>
-    </div>
+    </main>
   );
 }
