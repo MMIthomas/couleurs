@@ -1,8 +1,43 @@
+/* Font Variables */ 
+$font-main:'FugazOne-Regular', sans-serif;
+$font-accent: 'Hind-Regular', sans-serif;
+$font-family-title: $font-accent; 
+$font-family-body: $font-main;    
+
+/* Colors Variables */
 $blue-main : #11538C;
 
 .blue {
     background-color: $blue-main;
-    min-height: 100vh;
-    min-width: 100vw;
+    min-height: 100dvh;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
 }
 
+.blue__container {
+    display: flex;
+    white-space: nowrap;
+    will-change: transform;
+    padding: 0 10vw;
+}
+
+h1, h2, h3, .title-style {
+    font-family: $font-family-title;
+    font-weight: 700;
+}
+
+p, span, li {
+    font-family: $font-family-body;
+    line-height: 1.6;
+}
+
+.blue__title {
+    font-size: 20rem;
+    color: white;
+    text-align: center;
+    margin-right: 20rem;
+    display: inline-block;
+}
