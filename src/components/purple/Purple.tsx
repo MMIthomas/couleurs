@@ -4,33 +4,19 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { SplitText } from "gsap/SplitText";
 import ScrollBar from "./scrollBar/ScrollBar";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import PurpleStep1 from "./steps/PurpleStep1";
 
-gsap.registerPlugin(useGSAP, SplitText);
+gsap.registerPlugin(useGSAP, SplitText, ScrollTrigger);
 
 export default function Purple() {
   const container = useRef<HTMLDivElement>(null);
-  const colorTitleContainer = useRef<HTMLDivElement>(null);
-  const colorTitle = useRef<HTMLHeadingElement>(null);
-
-  useGSAP(
-    () => {
-      const splitText = new SplitText(colorTitle.current, {
-        type: "chars",
-      });
-      gsap.from(splitText.chars, {
-        y: 150,
-        duration: 1,
-        ease: "power3.out",
-        stagger: 0.02,
-      });
-    },
-    { scope: container },
-  );
 
   return (
     <section className={styles.purple} ref={container}>
-      <div className={styles.purple__title} ref={colorTitleContainer}>
-        <h2 ref={colorTitle}>Violet</h2>
+      <PurpleStep1 container={container} />
+      <div className={styles.purple__step2}>
+        <h3>Peut-être une fleur ?</h3>
       </div>
       <ScrollBar container={container} />
     </section>
