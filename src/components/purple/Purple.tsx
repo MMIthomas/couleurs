@@ -10,7 +10,7 @@ import PurpleStep2, { type PurpleStep2Refs } from "./steps/PurpleStep2";
 
 gsap.registerPlugin(useGSAP, SplitText, ScrollTrigger);
 
-const TOTAL_SCROLL = 1500;
+const TOTAL_SCROLL = 500;
 const ANIM1 = { y: 350, stagger: 0.02, duration: 0.5 } as const;
 const ANIM2 = { y: 100, stagger: 0.03, duration: 0.5 } as const;
 
@@ -28,7 +28,7 @@ export default function Purple() {
       gsap.set(step2.container, { opacity: 0 });
 
       // Animation vent — indépendante du scrub
-      gsap.set(step2.flower, { rotation: 45, transformOrigin: "bottom left" });
+      gsap.set(step2.flower, { x: -1000, y: 1000, rotation: 45, transformOrigin: "bottom left" });
       gsap.to(step2.flower, {
         rotation: 55,
         ease: "sine.inOut",
@@ -38,7 +38,7 @@ export default function Purple() {
       });
 
       const split1 = new SplitText(step1.violet, { type: "chars" });
-      const split2 = new SplitText(step2.text, { type: "chars" });
+      const split2 = new SplitText(step2.text, { type: "words", mask: "words" });
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -91,7 +91,19 @@ export default function Purple() {
           { y: ANIM1.y, ease: "power3.in", duration: ANIM1.duration },
           "<",
         )
-        .set(step2.container, { opacity: 1 }, "step1Exit")
+        // --- Step2 entrée — après la fin complète de l'exit Step1 ---
+        .addLabel("step2Enter", `step1Exit+=${ANIM1.duration}`)
+        .set(step2.container, { opacity: 1 }, "step2Enter")
+        .to(
+          step2.flower,
+          { x: 0, y: 0, ease: "power3.out", duration: ANIM1.duration },
+          "step2Enter",
+        )
+        .from(
+          split2.words,
+          { y: "100%", ease: "power3.out", stagger: 0.08, duration: 0.5 },
+          "step2Enter",
+        )
 
       return () => {
         split1.revert();

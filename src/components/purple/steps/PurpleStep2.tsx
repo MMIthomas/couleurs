@@ -24,7 +24,12 @@ const PurpleStep2 = forwardRef<PurpleStep2Refs>((_, ref) => {
       <p className={styles.purple__step2__text} ref={text}>
         Une fleur ?
       </p>
-      <img src={lavande} alt="Lavande" className={styles.purple__step2__flower} ref={flower} />
+      <img
+        src={lavande}
+        alt="Lavande"
+        className={styles.purple__step2__flower}
+        ref={flower}
+      />
     </div>
   );
 });
