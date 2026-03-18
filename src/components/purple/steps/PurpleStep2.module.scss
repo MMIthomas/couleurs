@@ -2,6 +2,7 @@ $purple-main: #7e3fe0;
 
 .purple__step2 {
   position: absolute;
+  z-index: 2;
   inset: 0;
   display: flex;
   justify-content: center;
