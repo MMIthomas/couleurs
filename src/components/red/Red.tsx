@@ -1,26 +1,40 @@
 import "./Red.scss";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
+import { useGSAP } from "@gsap/react";
 
-gsap.registerPlugin(SplitText, ScrollTrigger);
+gsap.registerPlugin(useGSAP, SplitText, ScrollTrigger);
 
 export default function Red() {
-  const containerRef = useRef(null);
+  const mainRef = useRef<HTMLElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLElement>(null);
+  const textRef = useRef<HTMLHeadingElement>(null);
+  const spidermanRef = useRef<HTMLImageElement>(null);
+  const dexter1Ref = useRef<HTMLImageElement>(null);
+  const dexter2Ref = useRef<HTMLImageElement>(null);
+  const roseRef = useRef<HTMLVideoElement>(null);
+  const stackSectionRef = useRef<HTMLElement>(null);
+  const stackStageRef = useRef<HTMLDivElement>(null);
+  const card1Ref = useRef<HTMLDivElement>(null);
+  const card2Ref = useRef<HTMLDivElement>(null);
+  const card3Ref = useRef<HTMLDivElement>(null);
+  const card4Ref = useRef<HTMLDivElement>(null);
+  const card5Ref = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const wrapper = document.querySelector(".horizontal");
-    const text = document.querySelector(".horizontalText");
-    if (!wrapper || !text) return;
+  useGSAP(() => {
+    const wrapper = wrapperRef.current;
+    const text = textRef.current;
+    const container = scrollContainerRef.current;
+
+    if (!wrapper || !text || !container) return;
 
     const split = SplitText.create(text, { type: "chars,words" });
 
-    const container = document.querySelector(".container");
-    if (!container) return;
-    
     gsap.set(container, { xPercent: 100 });
-    
+
     const scrollTween = gsap.to(container, {
       xPercent: -100,
       ease: "none",
@@ -50,16 +64,15 @@ export default function Red() {
       });
     });
 
-    const spiderman = document.querySelector('.img-spiderman');
-    if (spiderman) {
+    if (spidermanRef.current) {
       gsap.fromTo(
-        spiderman,
-        { 
-          x: 400, 
-          y: 200, 
+        spidermanRef.current,
+        {
+          x: 400,
+          y: 200,
           rotation: 25,
           scale: 0.6,
-          autoAlpha: 0 
+          autoAlpha: 0,
         },
         {
           x: 0,
@@ -67,29 +80,28 @@ export default function Red() {
           rotation: -5,
           scale: 1,
           autoAlpha: 1,
-          ease: 'power3.out',
+          ease: "power3.out",
           scrollTrigger: {
-            trigger: spiderman,
+            trigger: spidermanRef.current,
             containerAnimation: scrollTween,
-            start: 'left 110%',
-            end: 'left 30%',
+            start: "left 110%",
+            end: "left 30%",
             scrub: 1.5,
           },
         }
       );
     }
 
-    const dexter1 = document.querySelector('.img-dexter1');
-    if (dexter1) {
+    if (dexter1Ref.current) {
       gsap.fromTo(
-        dexter1,
-        { 
-          x: -300, 
-          y: 0, 
+        dexter1Ref.current,
+        {
+          x: -300,
+          y: 0,
           rotation: -20,
           skewX: 10,
           scale: 0.7,
-          autoAlpha: 0 
+          autoAlpha: 0,
         },
         {
           x: 0,
@@ -98,29 +110,27 @@ export default function Red() {
           skewX: 0,
           scale: 1,
           autoAlpha: 1,
-          ease: 'back.out(1.5)',
+          ease: "back.out(1.5)",
           scrollTrigger: {
-            trigger: dexter1,
+            trigger: dexter1Ref.current,
             containerAnimation: scrollTween,
-            start: 'left 110%',
-            end: 'left 35%',
+            start: "left 110%",
+            end: "left 35%",
             scrub: 1.5,
           },
         }
       );
-
     }
 
-    const dexter2 = document.querySelector('.img-dexter2');
-    if (dexter2) {
+    if (dexter2Ref.current) {
       gsap.fromTo(
-        dexter2,
-        { 
-          x: 600, 
-          y: -30, 
+        dexter2Ref.current,
+        {
+          x: 600,
+          y: -30,
           rotation: 30,
           scale: 0.5,
-          autoAlpha: 0 
+          autoAlpha: 0,
         },
         {
           x: 0,
@@ -128,30 +138,28 @@ export default function Red() {
           rotation: -40,
           scale: 1,
           autoAlpha: 1,
-          ease: 'bounce.out',
+          ease: "bounce.out",
           scrollTrigger: {
-            trigger: dexter2,
+            trigger: dexter2Ref.current,
             containerAnimation: scrollTween,
-            start: 'left 120%',
-            end: 'left 25%',
+            start: "left 120%",
+            end: "left 25%",
             scrub: 1.2,
           },
         }
       );
-
     }
 
-    const rose = document.querySelector('.video-rose');
-    if (rose) {
+    if (roseRef.current) {
       gsap.fromTo(
-        rose,
-        { 
-          x: -400, 
-          y: 800, 
+        roseRef.current,
+        {
+          x: -400,
+          y: 800,
           rotation: -25,
           scale: 0.4,
           autoAlpha: 0,
-          filter: 'blur(20px) brightness(0.5)'
+          filter: "blur(20px) brightness(0.5)",
         },
         {
           x: 0,
@@ -159,34 +167,55 @@ export default function Red() {
           rotation: 25,
           scale: 1,
           autoAlpha: 1,
-          filter: 'blur(0px) brightness(1)',
-          ease: 'expo.out',
+          filter: "blur(0px) brightness(1)",
+          ease: "expo.out",
           scrollTrigger: {
-            trigger: rose,
+            trigger: roseRef.current,
             containerAnimation: scrollTween,
-            start: 'left 110%',
-            end: 'left 30%',
+            start: "left 110%",
+            end: "left 30%",
             scrub: 1.5,
           },
         }
       );
     }
 
+    // Stack 3D section
+    const cards = [card1Ref, card2Ref, card3Ref, card4Ref, card5Ref].map(r => r.current).filter(Boolean);
 
+    const finalPositions = [
+      { x: -320, y: -80,  rotateZ: -18, rotateY: -25 },
+      { x: -130, y:  90,  rotateZ:  -7, rotateY:  12 },
+      { x:    0, y: -40,  rotateZ:   3, rotateY:   0 },
+      { x:  150, y:  70,  rotateZ:  14, rotateY: -18 },
+      { x:  310, y: -60,  rotateZ:  22, rotateY:  20 },
+    ];
 
-    return () => {
-      ScrollTrigger.getAll().forEach((st) => st.kill());
-      if (split && split.revert) split.revert();
-    };
-  }, []);
+    gsap.set(cards, { x: 0, y: 0, rotateZ: 0, rotateY: 0, scale: 1, autoAlpha: 1 });
+
+    cards.forEach((card, i) => {
+      const pos = finalPositions[i];
+      gsap.to(card, {
+        ...pos,
+        scale: 1,
+        ease: "back.out(2)",
+        duration: 0.8,
+        delay: i * 0.08,
+        scrollTrigger: {
+          trigger: stackStageRef.current,
+          start: "top 80%",
+          toggleActions: "play none none reverse",
+        },
+      });
+    });
+  }, { scope: mainRef });
 
   return (
-    <main className="redContainer">
-      <section className="horizontal">
-        <div className="container" ref={containerRef}>
+    <main className="redContainer" ref={mainRef}>
+      <section className="horizontal" ref={wrapperRef}>
+        <div className="container" ref={scrollContainerRef}>
 
-
-          <h3 className="horizontalText headingXL">
+          <h3 className="horizontalText headingXL" ref={textRef}>
             Le <span className="highlight">rouge</span> a toujours été{" "}
             <span className="highlight">important</span>
           </h3>
@@ -196,16 +225,19 @@ export default function Red() {
               src="/src/assets/red/spiderman.png"
               alt="Spiderman"
               className="scrollImg img-spiderman"
+              ref={spidermanRef}
             />
             <img
               src="/src/assets/red/dexter.png"
               alt="Dexter"
               className="scrollImg img-dexter1"
+              ref={dexter1Ref}
             />
             <img
               src="/src/assets/red/dexter.png"
               alt="Dexter"
               className="scrollImg img-dexter2"
+              ref={dexter2Ref}
             />
             <video
               src="/src/assets/red/rose.mp4"
@@ -214,7 +246,27 @@ export default function Red() {
               loop
               muted
               playsInline
+              ref={roseRef}
             />
+          </div>
+        </div>
+      </section>
+      <section className="stack-section" ref={stackSectionRef}>
+        <div className="stack-stage" ref={stackStageRef}>
+          <div className="stack-card card-1" ref={card1Ref}>
+            <img src="/src/assets/red/spiderman.png" alt="Spiderman" />
+          </div>
+          <div className="stack-card card-2" ref={card2Ref}>
+            <img src="/src/assets/red/dexter.png" alt="Dexter" />
+          </div>
+          <div className="stack-card card-3" ref={card3Ref}>
+            <video src="/src/assets/red/rose.mp4" autoPlay loop muted playsInline />
+          </div>
+          <div className="stack-card card-4" ref={card4Ref}>
+            <img src="/src/assets/red/dexter.png" alt="Dexter" />
+          </div>
+          <div className="stack-card card-5" ref={card5Ref}>
+            <img src="/src/assets/red/spiderman.png" alt="Spiderman" />
           </div>
         </div>
       </section>
