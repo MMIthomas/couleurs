@@ -70,7 +70,7 @@ $black-dark: #1A1A1A;
   align-items: center;
   justify-content: flex-start;
   padding: 0 10vw;
-  width: 400vw;
+  width: 200vw;
 }
 
 .horizontalText {
@@ -178,7 +178,8 @@ $black-dark: #1A1A1A;
 }
 
 .stack-section {
-  min-height: 150vh;
+  height: 100vh;
+  width: 100vw;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -188,14 +189,14 @@ $black-dark: #1A1A1A;
 
 .stack-stage {
   position: relative;
-  width: 200px;
-  height: 200px;
+  width: 0;
+  height: 0;
 }
 
 .stack-card {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: -100px;
+  left: -100px;
   width: 200px;
   height: 200px;
   border-radius: 0;
