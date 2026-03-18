@@ -26,7 +26,7 @@ export default function Purple() {
       const step2 = step2Ref.current!;
 
       const split1 = initStep1(step1);
-      initStep2(step2);
+      const widths = initStep2(step2);
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -40,7 +40,7 @@ export default function Purple() {
 
       buildStep1Enter(tl, split1, step1);
       buildStep1Exit(tl, split1, step1);
-      buildStep2Enter(tl, step2);
+      buildStep2Enter(tl, step2, widths);
 
       return () => {
         split1.revert();

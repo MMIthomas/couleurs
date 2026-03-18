@@ -33,10 +33,6 @@ $purple-main: #7e3fe0;
 .stickerWrapper {
   position: relative;
   display: inline-block;
-}
-
-.stickerMask {
-  display: inline-block;
   overflow: hidden;
   vertical-align: bottom;
 }
@@ -49,7 +45,7 @@ $purple-main: #7e3fe0;
   padding: 2px 16px;
 }
 
-.stickerPierre {
+.stickerAbsolute {
   position: absolute;
   top: 0;
   left: 0;
