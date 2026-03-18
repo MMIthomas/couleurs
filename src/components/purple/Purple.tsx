@@ -27,6 +27,16 @@ export default function Purple() {
 
       gsap.set(step2.container, { opacity: 0 });
 
+      // Animation vent — indépendante du scrub
+      gsap.set(step2.flower, { rotation: 45, transformOrigin: "bottom left" });
+      gsap.to(step2.flower, {
+        rotation: 55,
+        ease: "sine.inOut",
+        duration: 1.8,
+        repeat: -1,
+        yoyo: true,
+      });
+
       const split1 = new SplitText(step1.violet, { type: "chars" });
       const split2 = new SplitText(step2.text, { type: "chars" });
 
