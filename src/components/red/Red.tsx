@@ -17,13 +17,7 @@ export default function Red() {
   const dexter1Ref = useRef<HTMLImageElement>(null);
   const dexter2Ref = useRef<HTMLImageElement>(null);
   const roseRef = useRef<HTMLVideoElement>(null);
-  const stackSectionRef = useRef<HTMLElement>(null);
-  const stackStageRef = useRef<HTMLDivElement>(null);
-  const card1Ref = useRef<HTMLDivElement>(null);
-  const card2Ref = useRef<HTMLDivElement>(null);
-  const card3Ref = useRef<HTMLDivElement>(null);
-  const card4Ref = useRef<HTMLDivElement>(null);
-  const card5Ref = useRef<HTMLDivElement>(null);
+  const manifestoRef = useRef<HTMLElement>(null);
 
   useGSAP(() => {
     const wrapper = wrapperRef.current;
@@ -185,71 +179,111 @@ export default function Red() {
       );
     }
 
-    // Stack 3D section
-    const cards = [card1Ref, card2Ref, card3Ref, card4Ref, card5Ref].map(r => r.current).filter(Boolean);
+    // Manifesto section
+    if (!manifestoRef.current) return;
 
-    // Positions en cercle (rayon 300px, 5 cartes espacées de 72°, départ en haut)
-    const circlePositions = [
-      { x:    0, y: -300 },
-      { x:  285, y:  -93 },
-      { x:  176, y:  243 },
-      { x: -176, y:  243 },
-      { x: -285, y:  -93 },
+    const rows   = gsap.utils.toArray<HTMLElement>(".m-row", manifestoRef.current);
+    const nums   = gsap.utils.toArray<HTMLElement>(".m-num", manifestoRef.current);
+    const rouge  = manifestoRef.current.querySelector<HTMLElement>(".w-rouge");
+    const bg     = manifestoRef.current.querySelector<HTMLElement>(".manifesto-bg");
+    const ticker = manifestoRef.current.querySelector<HTMLElement>(".manifesto-ticker");
+    const lineAccent = manifestoRef.current.querySelector<HTMLElement>(".manifesto-line-accent");
+
+    // Directions d'entrée par mot
+    const fromProps = [
+      { x: -120, y: 40 },
+      { x: 120,  y: 20 },
+      { x: 0,    y: 60, scale: 0.8 },
+      { x: -80,  y: 30 },
     ];
 
-    // État initial : petites, empilées au centre
-    if (!stackSectionRef.current) return;
-
-    gsap.set(cards, { x: 0, y: 0, scale: 0, autoAlpha: 0 });
+    gsap.set(rows, { autoAlpha: 0 });
+    gsap.set(nums, { autoAlpha: 0 });
+    rows.forEach((row, i) => gsap.set(row, fromProps[i] ?? { y: 40 }));
+    if (rouge) gsap.set(rouge, { yPercent: 110 });
+    if (lineAccent) gsap.set(lineAccent, { scaleX: 0 });
+    if (ticker) gsap.set(ticker, { autoAlpha: 0 });
 
     const tl = gsap.timeline({
       scrollTrigger: {
-        trigger: stackSectionRef.current,
+        trigger: manifestoRef.current,
         start: "top top",
-        end: "+=400%",
+        end: "+=900%",
         scrub: 1.5,
         pin: true,
         anticipatePin: 1,
-        invalidateOnRefresh: true,
       },
     });
 
-    // Phase 1 : toutes les cards arrivent au centre, taille normale
-    tl.to(cards, {
-      scale: 1,
-      autoAlpha: 1,
-      ease: "none",
-      duration: 1,
-      stagger: 0.15,
+    // Ligne d'accent
+    tl.to(lineAccent, { scaleX: 1, ease: "none", duration: 0.4 });
+
+    // Ticker
+    tl.to(ticker, { autoAlpha: 1, ease: "none", duration: 0.3 }, "<");
+
+    // Mots 01-04 apparaissent l'un après l'autre
+    rows.forEach((row, i) => {
+      tl.to(row, { x: 0, y: 0, scale: 1, autoAlpha: 1, ease: "drift", duration: 0.8 }, `>-0.1`);
+      if (nums[i]) tl.to(nums[i], { autoAlpha: 0.4, ease: "none", duration: 0.3 }, "<");
     });
 
-    // Pause entre les deux phases
-    tl.to({}, { duration: 0.5 });
+    // ROUGE surgit depuis le bas
+    tl.to(rouge, { yPercent: 0, ease: "drift", duration: 1 }, ">+0.2");
 
-    // Phase 2 : formation en cercle (toutes simultanées)
-    cards.forEach((card, i) => {
-      tl.to(card, {
-        x: circlePositions[i].x,
-        y: circlePositions[i].y,
-        ease: "none",
-        duration: 1.5,
-      }, "circle");
-    });
+    // Fond rouge inonde l'écran via un cercle qui s'étend
+    if (bg) gsap.set(bg, { clipPath: "circle(0% at 50% 50%)" });
+    tl.to(bg, { opacity: 1, clipPath: "circle(150% at 50% 50%)", ease: "power2.out", duration: 0.8 }, ">-0.3");
 
-    // Pause
-    tl.to({}, { duration: 0.5 });
+    // Les 4 premiers mots s'effacent — m-full (ROUGE) reste visible pour le zoom
+    tl.to(rows.slice(0, 4), { autoAlpha: 0, ease: "none", duration: 0.4 }, "<");
+    tl.to(ticker, { autoAlpha: 0, ease: "none", duration: 0.3 }, "<");
+    tl.to(lineAccent, { autoAlpha: 0, ease: "none", duration: 0.3 }, "<");
 
-    // Phase 3 : alignement horizontal
-    const lineSpacing = 220;
-    const totalWidth = (cards.length - 1) * lineSpacing;
-    cards.forEach((card, i) => {
-      tl.to(card, {
-        x: -totalWidth / 2 + i * lineSpacing,
-        y: 0,
-        ease: "none",
-        duration: 1.5,
-      }, "line");
-    });
+    // Zoom dans le O de ROUGE
+    if (rouge) {
+      const mFullRow = manifestoRef.current.querySelector<HTMLElement>(".m-full");
+      const rogueSplit = SplitText.create(rouge, { type: "chars" });
+      const letterO = rogueSplit.chars[1]; // R-O-U-G-E → index 1
+      const otherChars = rogueSplit.chars.filter((_, i) => i !== 1);
+      const tagline = manifestoRef.current.querySelector<HTMLElement>(".manifesto-tagline");
+
+      gsap.set(tagline, { autoAlpha: 0 });
+
+      // Autres lettres disparaissent
+      tl.to(otherChars, { autoAlpha: 0, ease: "none", duration: 0.3 }, ">+0.3");
+
+      // Move + zoom en un seul tween : l'origine de scale est le centre viewport,
+      // le x/y assure que le centre du O atterrit exactement au centre écran.
+      tl.to(letterO, {
+        x: () => {
+          const r = letterO.getBoundingClientRect();
+          return window.innerWidth  / 2 - (r.left + r.width  / 2);
+        },
+        y: () => {
+          const r = letterO.getBoundingClientRect();
+          return window.innerHeight / 2 - (r.top  + r.height / 2);
+        },
+        scale: 80,
+        ease: "power2.in",
+        duration: 1.8,
+        transformOrigin: "center center",
+      }, "<");
+
+      const taglineRouge = manifestoRef.current.querySelector<HTMLElement>(".tagline-rouge");
+
+      // Tagline apparaît quand on est complètement à l'intérieur
+      tl.to(tagline, { autoAlpha: 1, ease: "none", duration: 0.8 }, ">-0.6");
+
+      // Fond se rétracte vers le mot "rouge" dans la tagline (bottom: 12vh, centré → ~63% 90%)
+      tl.to(bg, { clipPath: "circle(5% at 63% 90%)", ease: "power2.in", duration: 1.0 }, "<");
+
+      // "rouge" devient rouge dès que le cercle l'atteint
+      if (taglineRouge) tl.to(taglineRouge, { color: "#DB3B3B", ease: "none", duration: 0.1 }, ">-0.1");
+
+      // Cercle se referme rapidement → fond blanc
+      tl.to(bg, { clipPath: "circle(0% at 63% 90%)", ease: "power3.in", duration: 0.3 }, ">+0.1");
+      tl.to(manifestoRef.current, { backgroundColor: "#ffffff", ease: "none", duration: 0.3 }, "<");
+    }
   }, { scope: mainRef });
 
   return (
@@ -295,24 +329,37 @@ export default function Red() {
         </div>
       </section>
 
-      <section className="stack-section" ref={stackSectionRef}>
-        <div className="stack-stage" ref={stackStageRef}>
-          <div className="stack-card card-1" ref={card1Ref}>
-            <img src="/src/assets/red/spiderman.png" alt="Spiderman" />
+      <section className="manifesto" ref={manifestoRef}>
+        <div className="manifesto-bg" />
+
+        <div className="manifesto-ticker">
+          <span>Rouge — Rouge — Rouge — Rouge — Rouge — Rouge — Rouge — Rouge —&nbsp;</span>
+        </div>
+
+        <div className="manifesto-content">
+          <div className="m-row m-left">
+            <span className="m-num">01</span>
+            <span className="manifesto-word w-passion">Passion</span>
           </div>
-          <div className="stack-card card-2" ref={card2Ref}>
-            <img src="/src/assets/red/dexter.png" alt="Dexter" />
+          <div className="m-row m-right">
+            <span className="m-num">02</span>
+            <span className="manifesto-word w-danger outline">Danger</span>
           </div>
-          <div className="stack-card card-3" ref={card3Ref}>
-            <video src="/src/assets/red/rose.mp4" autoPlay loop muted playsInline />
+          <div className="m-row m-center">
+            <span className="m-num">03</span>
+            <span className="manifesto-word w-amour">Amour</span>
           </div>
-          <div className="stack-card card-4" ref={card4Ref}>
-            <img src="/src/assets/red/dexter.png" alt="Dexter" />
+          <div className="m-row m-left">
+            <span className="m-num">04</span>
+            <span className="manifesto-word w-colere outline">Colère</span>
           </div>
-          <div className="stack-card card-5" ref={card5Ref}>
-            <img src="/src/assets/red/spiderman.png" alt="Spiderman" />
+          <div className="m-row m-full">
+            <span className="manifesto-word w-rouge">Rouge</span>
           </div>
         </div>
+
+        <div className="manifesto-line-accent" />
+        <p className="manifesto-tagline">Voilà, ce que c'est le <span className="tagline-rouge">rouge</span>.</p>
       </section>
     </main>
   );
