@@ -1,0 +1,23 @@
+.purple__step2 {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+
+  &__text {
+    color: #fff;
+    font-size: 6rem;
+    font-weight: 800;
+    font-family: "Hind", sans-serif;
+    text-align: center;
+  }
+
+  &__flower {
+    position: absolute;
+    left: -15%;
+    bottom: 30%;
+    width: 500px;
+  }
+}

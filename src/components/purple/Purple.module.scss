@@ -13,17 +13,8 @@ $purple-main: #7E3FE0;
   width: 100%;
   position: relative;
 
-  &__step2 {
+  &__steps {
+    position: relative;
     height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    h3 {
-      color: #fff;
-      font-size: 2rem;
-      font-weight: 800;
-      font-family: "Hind", sans-serif;
-    }
   }
 }
