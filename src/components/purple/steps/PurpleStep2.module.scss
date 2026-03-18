@@ -1,3 +1,5 @@
+$purple-main: #7e3fe0;
+
 .purple__step2 {
   position: absolute;
   inset: 0;
@@ -20,4 +22,36 @@
     bottom: 30%;
     width: 500px;
   }
+}
+
+.mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+.stickerWrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.stickerMask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+.sticker {
+  display: inline-block;
+  background: #fff;
+  color: $purple-main;
+  border-radius: 12px;
+  padding: 2px 16px;
+}
+
+.stickerPierre {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
 }
