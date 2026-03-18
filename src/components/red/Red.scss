@@ -177,6 +177,40 @@ $black-dark: #1A1A1A;
   filter: saturate(1.2) brightness(1.05);
 }
 
+.stack-section {
+  min-height: 150vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  perspective: 1200px;
+}
+
+.stack-stage {
+  position: relative;
+  width: 200px;
+  height: 200px;
+}
+
+.stack-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200px;
+  height: 200px;
+  border-radius: 0;
+  overflow: hidden;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.2), 0 10px 30px rgba(219,59,59,0.15);
+  will-change: transform, opacity;
+
+  img, video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}
+
 @media (max-width: 1400px) {
   .headingXL {
     font-size: clamp(5rem, 10vw, 35rem);
