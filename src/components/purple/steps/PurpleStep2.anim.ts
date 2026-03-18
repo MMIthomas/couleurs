@@ -10,6 +10,7 @@ export interface Step2Widths {
 export function initStep2(step2: PurpleStep2Refs): Step2Widths {
   gsap.set(step2.container, { opacity: 0 });
   gsap.set(step2.flower, { x: -1000, y: 1000, rotation: 45, transformOrigin: "bottom left" });
+  gsap.set(step2.amethyst, { y: "-110vh" });
 
   // Pré-mesure AVANT tout transform
   const pierreWidth = step2.pierreSticker.offsetWidth;
@@ -45,11 +46,23 @@ export function buildStep2Enter(
     .from(step2.fleurSticker, { y: "100%", ease: "power3.out", duration: 0.5 }, "step2Enter+=0.08")
     .from(step2.questionMark, { y: "100%", ease: "power3.out", duration: 0.5 }, "step2Enter+=0.16")
 
-    // Swap 1 : fleur → pierre
+    // Swap 1 : fleur → pierre + chute améthyste (one-shot, non-scrubée)
     .addLabel("stickerSwap1", "step2Enter+=1")
     .to(step2.stickerWrapper, { width: widths.pierreWidth,  duration: 0.4, ease: "power2.inOut" }, "stickerSwap1")
     .to(step2.fleurSticker,   { y: "-100%", ease: "power3.in",  duration: 0.3 }, "stickerSwap1")
     .to(step2.pierreSticker,  { y: "0%",    ease: "power3.out", duration: 0.3 }, "stickerSwap1+=0.05")
+    .call((() => {
+      let fired = false;
+      return () => {
+        if (fired) return;
+        fired = true;
+        gsap.to(step2.amethyst, {
+          y: 0,
+          duration: 1.4,
+          ease: "bounce.out",
+        });
+      };
+    })(), [], "stickerSwap1")
 
     // Swap 2 : pierre → galaxie
     .addLabel("stickerSwap2", "stickerSwap1+=1")

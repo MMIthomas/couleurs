@@ -7,6 +7,7 @@ export interface PurpleStep2Refs {
   container: HTMLDivElement;
   text: HTMLParagraphElement;
   flower: HTMLImageElement;
+  amethyst: HTMLImageElement;
   une: HTMLSpanElement;
   stickerWrapper: HTMLSpanElement;
   fleurSticker: HTMLSpanElement;
@@ -31,6 +32,7 @@ const PurpleStep2 = forwardRef<PurpleStep2Refs>((_, ref) => {
     container: containerRef.current!,
     text: text.current!,
     flower: flower.current!,
+    amethyst: amethyst.current!,
     une: une.current!,
     stickerWrapper: stickerWrapper.current!,
     fleurSticker: fleurSticker.current!,
