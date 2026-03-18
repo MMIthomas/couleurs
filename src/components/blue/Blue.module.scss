@@ -1,34 +1,394 @@
-/* Font Variables */ 
-$font-main:'FugazOne-Regular', sans-serif;
+$font-main: 'FugazOne-Regular', sans-serif;
 $font-accent: 'Hind-Regular', sans-serif;
-$font-family-title: $font-accent; 
-$font-family-body: $font-main;    
 
-/* Colors Variables */
-$blue-main : #11538C;
+$color-gold: #c9a84c;
 
-.blue {
-    background-color: $blue-main;
-    min-height: 100dvh;
-    width: 100%;
-    padding: 4rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.blue_outer {
+  width: 100%;
+  position: relative;
 }
 
-h1, h2, h3, .title-style {
-    font-family: $font-family-title;
-    font-weight: 700;
+.blue_sticky {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background: #020613;
 }
 
-p, span, li {
-    font-family: $font-family-body;
-    line-height: 1.6;
+.viewport {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
 }
 
-.blue__title {
-    font-size: 20rem;
+.horizontal_wrapper {
+  display: flex;
+  height: 100%;
+}
+
+.section {
+  flex: 0 0 100vw;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: clamp(2rem, 6vw, 6rem);
+  overflow: hidden;
+}
+
+.timeline_track {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.07);
+  z-index: 100;
+}
+
+.timeline_progress {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, $color-gold, rgba($color-gold, 0.3));
+  transform-origin: left center;
+  transform: scaleX(0);
+}
+
+.timeline_dots {
+  position: absolute;
+  top: 0;
+  left: clamp(2rem, 6vw, 6rem);
+  right: clamp(2rem, 6vw, 6rem);
+  display: flex;
+  justify-content: space-between;
+}
+
+.timeline_dot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding-top: 8px;
+}
+
+.dot_pip {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  margin-top: -6px;
+}
+
+.dot_year {
+  font-family: $font-accent;
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.22);
+  white-space: nowrap;
+}
+
+.intro {
+  background: radial-gradient(ellipse at 30% 60%, #0d3b8e 0%, #000d1a 70%);
+  align-items: center;
+  text-align: center;
+}
+
+.intro__noise {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  background-size: 256px;
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+.intro__eyebrow {
+  font-family: $font-accent;
+  font-size: clamp(0.65rem, 1.1vw, 0.85rem);
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+  margin-bottom: 1rem;
+  z-index: 10;
+}
+
+.intro__title {
+  font-family: $font-main;
+  font-size: clamp(5rem, 20vw, 22rem);
+  text-transform: uppercase;
+  margin: 0;
+  line-height: 0.8;
+  z-index: 10;
+  background: linear-gradient(160deg, #ffffff 30%, #4a90d9 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.intro__sub {
+  font-family: $font-accent;
+  font-size: clamp(0.75rem, 1.2vw, 0.95rem);
+  color: rgba(255, 255, 255, 0.3);
+  margin-top: 1.5rem;
+  max-width: 360px;
+  line-height: 1.6;
+  z-index: 10;
+}
+
+.scroll_hint {
+  position: absolute;
+  bottom: 2rem;
+  right: clamp(1.5rem, 4vw, 4rem);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: rgba(255, 255, 255, 0.18);
+  font-family: $font-accent;
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  z-index: 20;
+}
+
+.grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(white, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(white, 0.04) 1px, transparent 1px);
+  background-size: 80px 80px;
+  z-index: 1;
+}
+
+.chapter__symbol {
+  position: absolute;
+  right: clamp(2rem, 8vw, 8rem);
+  top: 50%;
+  transform: translateY(-50%) scale(0.5);
+  font-size: clamp(6rem, 16vw, 18rem);
+  color: rgba(255, 255, 255, 0.04);
+  line-height: 1;
+  z-index: 2;
+  user-select: none;
+  opacity: 0;
+}
+
+.chapter__content {
+  position: relative;
+  z-index: 10;
+  max-width: 60vw;
+}
+
+.chapter__era {
+  font-family: $font-accent;
+  font-size: clamp(0.55rem, 0.8vw, 0.7rem);
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.3);
+  margin-bottom: 1.2rem;
+}
+
+.chapter__title {
+  font-family: $font-main;
+  font-size: clamp(2rem, 8vw, 9rem);
+  text-transform: uppercase;
+  margin: 0;
+  line-height: 0.85;
+  color: white;
+  display: flex;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.char {
+  display: inline-block;
+  transform: translateY(110%);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.chapter__desc {
+  font-family: $font-accent;
+  font-size: clamp(0.95rem, 1.4vw, 1.2rem);
+  max-width: 500px;
+  margin-top: 2.5rem;
+  line-height: 1.75;
+  font-weight: 300;
+  opacity: 0;
+  color: rgba(255, 255, 255, 0.65);
+  transform: translateY(20px);
+}
+
+.chapter__meta {
+  position: absolute;
+  bottom: clamp(1.5rem, 3vw, 3rem);
+  left: clamp(2rem, 6vw, 6rem);
+  right: clamp(2rem, 6vw, 6rem);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  z-index: 20;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.year {
+  font-family: $font-main;
+  font-size: clamp(2.5rem, 5vw, 5rem);
+  opacity: 0.65;
+  color: white;
+  line-height: 1;
+}
+
+.label {
+  font-family: $font-accent;
+  font-size: 0.6rem;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.18);
+}
+
+.theme_lapis {
+  background: radial-gradient(ellipse at 20% 50%, #0a2a6e 0%, #000510 100%);
+
+  .chapter__era {
+    color: rgba($color-gold, 0.45);
+  }
+
+  .char {
+    color: $color-gold;
+  }
+
+  .year {
+    color: $color-gold;
+    opacity: 0.55;
+  }
+}
+
+.theme_woad {
+  background: linear-gradient(135deg, #0e1f10 0%, #1a2e1e 50%, #050a06 100%);
+
+  .char {
+    color: #8fbc5e;
+  }
+
+  .chapter__desc {
+    color: rgba(#c8e6a0, 0.6);
+  }
+
+  .year {
+    color: #8fbc5e;
+    opacity: 0.5;
+  }
+}
+
+.theme_royal {
+  background: linear-gradient(150deg, #0d1b6e 0%, #05092f 100%);
+
+  .chapter__era {
+    color: rgba($color-gold, 0.4);
+  }
+
+  .char {
+    color: $color-gold;
+  }
+
+  .chapter__desc {
+    color: rgba(#e8d9c0, 0.65);
+  }
+
+  .year {
+    color: $color-gold;
+    opacity: 0.55;
+  }
+
+  &::after {
+    content: '✦';
+    position: absolute;
+    top: 2rem;
+    right: 2.5rem;
+    font-size: 1.2rem;
+    color: rgba($color-gold, 0.1);
+    z-index: 5;
+  }
+}
+
+.theme_denim {
+  background-color: #0b3d6b;
+  background-image:
+    repeating-linear-gradient(45deg, transparent, transparent 14px,
+      rgba(white, 0.015) 14px, rgba(white, 0.015) 28px),
+    repeating-linear-gradient(-45deg, transparent, transparent 14px,
+      rgba(white, 0.01) 14px, rgba(white, 0.01) 28px);
+
+  .char {
+    color: #a8d4ff;
+  }
+
+  .chapter__desc {
+    color: rgba(#d0e8ff, 0.6);
+  }
+
+  .year {
+    color: #a8d4ff;
+    opacity: 0.5;
+  }
+}
+
+.theme_klein {
+  background: #002FA7;
+
+  .grid {
+    display: none;
+  }
+
+  .chapter__symbol {
+    font-size: clamp(14rem, 32vw, 38rem);
+    color: rgba(255, 255, 255, 0.03);
+    right: 50%;
+    transform: translateX(50%) translateY(-50%) scale(0.5);
+  }
+
+  .char {
     color: white;
-    text-align: center;
+  }
+
+  .chapter__desc {
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  .year {
+    opacity: 0.4;
+  }
+}
+
+.theme_navy {
+  background: radial-gradient(ellipse at top right, #0f2460 0%, #020613 100%);
+
+  .grid {
+    background-image:
+      linear-gradient(to right, rgba(white, 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(white, 0.06) 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.45;
+  }
+
+  .char {
+    color: #4fc3f7;
+  }
+
+  .chapter__era {
+    color: rgba(#4fc3f7, 0.45);
+  }
+
+  .chapter__desc {
+    color: rgba(#cce8ff, 0.55);
+  }
+
+  .year {
+    color: #4fc3f7;
+    opacity: 0.45;
+  }
 }
