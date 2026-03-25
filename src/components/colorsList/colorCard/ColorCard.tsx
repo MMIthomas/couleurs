@@ -10,12 +10,12 @@ gsap.registerPlugin(useGSAP, SplitText, ScrollTrigger);
 export default function ColorCard({ color, content }: { color: string, content: Array<string> }) {
   return (
     <section className={styles.colorCard}>
-      <div className={styles.colorCard__red} style={{ backgroundColor: color }}></div>
+      <div className={styles.colorCard__swatch} style={{ backgroundColor: color }} />
       <article className={styles.colorCard__content}>
         {content.map((item, index) => (
-          <img key={index} src={item} alt={item} />
+          <img key={index} src={item} alt="" />
         ))}
       </article>
     </section>
-);
+  );
 }
