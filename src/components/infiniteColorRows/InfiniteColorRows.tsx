@@ -31,6 +31,7 @@ export default function InfiniteColorRows() {
   const posRef = useRef(0);
   const dragRef = useRef({ active: false, startX: 0, startPos: 0 });
   const [photos, setPhotos] = useState<Photos>({});
+  const [expandedIdx, setExpandedIdx] = useState<number | null>(null);
 
   const getItemWidth = useCallback(() => {
     const first = trackRef.current?.firstElementChild as HTMLElement | null;
@@ -68,7 +69,7 @@ export default function InfiniteColorRows() {
     dragRef.current.active = false;
   }, []);
 
-  const onKeyDown = useCallback((e: React.KeyboardEvent) => {
+  const onKeyDown = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
     const itemW = getItemWidth();
     if (e.key === "ArrowRight") {
       e.preventDefault();
@@ -80,6 +81,13 @@ export default function InfiniteColorRows() {
       posRef.current += itemW;
       clampPosition();
       applyTransform();
+    } else if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      const idx = Number((e.currentTarget as HTMLElement).dataset.idx);
+      setExpandedIdx(prev => prev === idx ? null : idx);
+    } else if (e.key === "Escape") {
+      e.preventDefault();
+      setExpandedIdx(null);
     }
   }, [getItemWidth, clampPosition, applyTransform]);
 
@@ -144,10 +152,12 @@ export default function InfiniteColorRows() {
         {ITEMS.map((c, i) => (
           <div
             key={`${i}-${c.query}`}
-            className={styles.item}
+            className={`${styles.item}${expandedIdx === i ? ` ${styles.expanded}` : ""}`}
             role="button"
             tabIndex={0}
             aria-label={`${c.name} ${c.hex}`}
+            aria-expanded={expandedIdx === i}
+            data-idx={i}
             style={{ "--color": c.hex } as React.CSSProperties}
             onKeyDown={onKeyDown}
           >
