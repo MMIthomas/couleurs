@@ -1,0 +1,99 @@
+.viewport {
+  width: 100%;
+  overflow: hidden;
+  cursor: grab;
+  user-select: none;
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+.track {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 12px;
+  will-change: transform;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  border-radius: 16px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: #ffffff;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  outline: none;
+
+  &:focus-visible {
+    box-shadow: 0 0 0 3px var(--color, #457B9D);
+  }
+}
+
+.swatch {
+  width: 120px;
+  height: 120px;
+  background-color: var(--color);
+  flex-shrink: 0;
+}
+
+.panel {
+  width: 0;
+  overflow: hidden;
+  transition: width 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  padding: 0;
+}
+
+.item:hover .panel,
+.item:focus-within .panel {
+  width: 340px;
+  padding: 16px 20px;
+}
+
+.hex {
+  font-family: monospace;
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1a1a;
+  white-space: nowrap;
+}
+
+.colorName {
+  font-size: 13px;
+  color: #888;
+  white-space: nowrap;
+}
+
+.photos {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+
+  img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    opacity: 0;
+    transform: scale(0.92);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+
+    @for $i from 1 through 3 {
+      &:nth-child(#{$i}) {
+        transition-delay: #{($i - 1) * 0.07}s;
+      }
+    }
+  }
+}
+
+.item:hover .photos img,
+.item:focus-within .photos img {
+  opacity: 1;
+  transform: scale(1);
+}

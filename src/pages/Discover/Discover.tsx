@@ -1,10 +1,11 @@
 import React from "react";
 import styles from "./Discover.module.scss";
-import ColorsList from "../../components/colorsList/ColorsList.tsx";
+import InfiniteColorRows from "../../components/infiniteColorRows/InfiniteColorRows.tsx";
+
 const Discover: React.FC = () => {
   return (
     <div className={styles.container}>
-      <ColorsList />
+      <InfiniteColorRows />
     </div>
   );
 };
