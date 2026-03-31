@@ -24,7 +24,7 @@ export default function InfiniteColorRows() {
       <div className={styles.track}>
         {ITEMS.map((c, i) => (
           <div
-            key={i}
+            key={`${i}-${c.query}`}
             className={styles.item}
             role="button"
             tabIndex={0}
