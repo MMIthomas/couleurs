@@ -56,7 +56,12 @@ export default function InfiniteColorRows() {
 
     const onWheel = (e: WheelEvent) => {
       e.preventDefault();
-      posRef.current -= e.deltaY * 1.2;
+      const LINE_HEIGHT = 40;
+      const delta =
+        e.deltaMode === 1 ? e.deltaY * LINE_HEIGHT :
+        e.deltaMode === 2 ? e.deltaY * (viewportRef.current?.clientHeight ?? 600) :
+        e.deltaY;
+      posRef.current -= delta * 1.2;
       clampPosition();
       applyTransform();
     };
