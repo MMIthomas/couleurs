@@ -14,8 +14,8 @@ const COLORS = [
   { name: "Marron", hex: "#8B4513", query: "brown" },
   { name: "Beige",  hex: "#D4A574", query: "beige" },
   { name: "Gris",   hex: "#8D99AE", query: "grey" },
-  { name: "Noir",   hex: "#1A1A2E", query: "black" },
   { name: "Blanc",  hex: "#F8F9FA", query: "white" },
+  { name: "Noir",   hex: "#1A1A2E", query: "black" },
 ];
 
 const CLONES = 3;

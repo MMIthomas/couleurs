@@ -27,6 +27,7 @@
   background: #ffffff;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
   outline: none;
+  padding: 0 16px;
 
   &:focus-visible {
     box-shadow: 0 0 0 3px var(--color, #457B9D);
