@@ -81,17 +81,23 @@ export default function InfiniteColorRows() {
 
   useEffect(() => {
     const apiKey = import.meta.env.VITE_API_KEY as string;
-    COLORS.forEach(async ({ query }) => {
-      const res = await fetch(
-        `https://api.pexels.com/v1/search?query=${query}&per_page=3&orientation=portrait`,
-        { headers: { Authorization: apiKey } }
-      );
-      const data = await res.json();
-      setPhotos((prev) => ({
-        ...prev,
-        [query]: data.photos.map((p: { src: { medium: string } }) => p.src.medium),
-      }));
-    });
+    Promise.allSettled(
+      COLORS.map(async ({ query }) => {
+        try {
+          const res = await fetch(
+            `https://api.pexels.com/v1/search?query=${query}&per_page=3&orientation=portrait`,
+            { headers: { Authorization: apiKey } }
+          );
+          if (!res.ok) return;
+          const data = await res.json();
+          setPhotos((prev) => ({
+            ...prev,
+            [query]: data.photos.map((p: { src: { medium: string } }) => p.src.medium),
+          }));
+        } catch {
+        }
+      })
+    );
   }, []);
 
   useEffect(() => {
@@ -149,7 +155,7 @@ export default function InfiniteColorRows() {
               <span className={styles.colorName}>{c.name}</span>
               <div className={styles.photos}>
                 {(photos[c.query] ?? []).map((src, j) => (
-                  <img key={j} src={src} alt={c.name} />
+                  <img key={j} src={src} alt={c.name} loading="lazy" />
                 ))}
               </div>
             </div>
