@@ -302,7 +302,7 @@ export default function Red() {
         <div className={styles["manifesto-bg"]} />
 
         <div className={styles["manifesto-ticker"]}>
-          <span>Rouge — Rouge — Rouge — Rouge — Rouge — Rouge — Rouge — Rouge —&nbsp;</span>
+          <span></span>
         </div>
 
         <div className={styles["manifesto-content"]}>
