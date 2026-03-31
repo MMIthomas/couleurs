@@ -21,6 +21,7 @@ const ITEMS = Array.from({ length: CLONES }, () => COLORS).flat();
 
 export default function InfiniteColorRows() {
   const trackRef = useRef<HTMLDivElement>(null);
+  const viewportRef = useRef<HTMLDivElement>(null);
   const posRef = useRef(0);
 
   const getItemWidth = useCallback(() => {
@@ -49,8 +50,23 @@ export default function InfiniteColorRows() {
     applyTransform();
   }, [getItemWidth, applyTransform]);
 
+  useEffect(() => {
+    const el = viewportRef.current;
+    if (!el) return;
+
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      posRef.current -= e.deltaY * 1.2;
+      clampPosition();
+      applyTransform();
+    };
+
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => el.removeEventListener("wheel", onWheel);
+  }, [clampPosition, applyTransform]);
+
   return (
-    <div className={styles.viewport}>
+    <div className={styles.viewport} ref={viewportRef}>
       <div className={styles.track} ref={trackRef}>
         {ITEMS.map((c, i) => (
           <div
