@@ -29,10 +29,10 @@ export default function InfiniteColorRows() {
             role="button"
             tabIndex={0}
             aria-label={`${c.name} ${c.hex}`}
+            style={{ "--color": c.hex } as React.CSSProperties}
           >
             <div
               className={styles.swatch}
-              style={{ "--color": c.hex } as React.CSSProperties}
             />
             <div className={styles.panel}>
               <span className={styles.hex}>{c.hex}</span>
