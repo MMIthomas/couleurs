@@ -22,7 +22,6 @@ const ITEMS = Array.from({ length: CLONES }, () => COLORS).flat();
 export default function InfiniteColorRows() {
   const trackRef = useRef<HTMLDivElement>(null);
   const posRef = useRef(0);
-  const animRef = useRef<number>(0);
 
   const getItemWidth = useCallback(() => {
     const first = trackRef.current?.firstElementChild as HTMLElement | null;
@@ -33,7 +32,7 @@ export default function InfiniteColorRows() {
   const clampPosition = useCallback(() => {
     const itemW = getItemWidth();
     const setSize = COLORS.length * itemW;
-    if (posRef.current < -setSize * 2) posRef.current += setSize;
+    if (posRef.current < -(CLONES - 1) * setSize) posRef.current += setSize;
     if (posRef.current > -setSize) posRef.current -= setSize;
   }, [getItemWidth]);
 
