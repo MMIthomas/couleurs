@@ -61,6 +61,21 @@ export default function InfiniteColorRows() {
     dragRef.current.active = false;
   }, []);
 
+  const onKeyDown = useCallback((e: React.KeyboardEvent) => {
+    const itemW = getItemWidth();
+    if (e.key === "ArrowRight") {
+      e.preventDefault();
+      posRef.current -= itemW;
+      clampPosition();
+      applyTransform();
+    } else if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      posRef.current += itemW;
+      clampPosition();
+      applyTransform();
+    }
+  }, [getItemWidth, clampPosition, applyTransform]);
+
   useEffect(() => {
     const itemW = getItemWidth();
     const setSize = COLORS.length * itemW;
@@ -106,6 +121,7 @@ export default function InfiniteColorRows() {
             tabIndex={0}
             aria-label={`${c.name} ${c.hex}`}
             style={{ "--color": c.hex } as React.CSSProperties}
+            onKeyDown={onKeyDown}
           >
             <div
               className={styles.swatch}
