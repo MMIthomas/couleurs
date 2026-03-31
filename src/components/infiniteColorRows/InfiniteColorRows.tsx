@@ -38,6 +38,8 @@ export default function InfiniteColorRows() {
   const nameRafRef   = useRef(0);
   const scrollRafRef = useRef(0);
 
+  const activeColorRef = useRef<Color | null>(null);
+
   const [photos, setPhotos]           = useState<Photos>({});
   const [activeColor, setActiveColor] = useState<Color | null>(null);
   const [displayHex, setDisplayHex]   = useState("");
@@ -111,6 +113,23 @@ export default function InfiniteColorRows() {
     );
   }, [getItemWidth]);
 
+  const showColor = useCallback((color: Color) => {
+    if (activeColorRef.current?.query === color.query) return;
+    activeColorRef.current = color;
+    setActiveColor(color);
+    scramble(color.hex, setDisplayHex, hexRafRef);
+    scramble(color.name, setDisplayName, nameRafRef);
+  }, [scramble]);
+
+  const colorAtCenter = useCallback((): Color | null => {
+    const itemW = getItemWidth();
+    const vw    = viewportRef.current?.clientWidth ?? 0;
+    const centerX = -posRef.current + vw / 2;
+    const idx = Math.round((centerX - 6) / itemW - 0.5);
+    const clamped = ((idx % ITEMS.length) + ITEMS.length) % ITEMS.length;
+    return ITEMS[clamped] ?? null;
+  }, [getItemWidth]);
+
   const activate = useCallback((color: Color) => {
     const itemW = getItemWidth();
     const vw    = viewportRef.current?.clientWidth ?? 0;
@@ -125,11 +144,9 @@ export default function InfiniteColorRows() {
       }
     });
 
-    setActiveColor(color);
-    scramble(color.hex, setDisplayHex, hexRafRef);
-    scramble(color.name, setDisplayName, nameRafRef);
+    showColor(color);
     scrollTo(computeScrollTarget(nearestIdx));
-  }, [scramble, scrollTo, computeScrollTarget, getItemWidth]);
+  }, [showColor, scrollTo, computeScrollTarget, getItemWidth]);
 
   const onPointerDown = useCallback((e: React.PointerEvent) => {
     cancelAnimationFrame(scrollRafRef.current);
@@ -142,7 +159,9 @@ export default function InfiniteColorRows() {
     posRef.current = dragRef.current.startPos + (e.clientX - dragRef.current.startX);
     clampPosition();
     applyTransform();
-  }, [clampPosition, applyTransform]);
+    const c = colorAtCenter();
+    if (c) showColor(c);
+  }, [clampPosition, applyTransform, colorAtCenter, showColor]);
 
   const onPointerUp = useCallback(() => {
     dragRef.current.active = false;
@@ -206,10 +225,12 @@ export default function InfiniteColorRows() {
       posRef.current -= delta * 1.2;
       clampPosition();
       applyTransform();
+      const c = colorAtCenter();
+      if (c) showColor(c);
     };
     el.addEventListener("wheel", onWheel, { passive: false });
     return () => el.removeEventListener("wheel", onWheel);
-  }, [clampPosition, applyTransform]);
+  }, [clampPosition, applyTransform, colorAtCenter, showColor]);
 
   useEffect(() => () => {
     cancelAnimationFrame(hexRafRef.current);
