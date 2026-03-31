@@ -23,6 +23,7 @@ export default function InfiniteColorRows() {
   const trackRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
   const posRef = useRef(0);
+  const dragRef = useRef({ active: false, startX: 0, startPos: 0 });
 
   const getItemWidth = useCallback(() => {
     const first = trackRef.current?.firstElementChild as HTMLElement | null;
@@ -41,6 +42,23 @@ export default function InfiniteColorRows() {
     if (trackRef.current) {
       trackRef.current.style.transform = `translateX(${posRef.current}px)`;
     }
+  }, []);
+
+  const onPointerDown = useCallback((e: React.PointerEvent) => {
+    dragRef.current = { active: true, startX: e.clientX, startPos: posRef.current };
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+  }, []);
+
+  const onPointerMove = useCallback((e: React.PointerEvent) => {
+    if (!dragRef.current.active) return;
+    const delta = e.clientX - dragRef.current.startX;
+    posRef.current = dragRef.current.startPos + delta;
+    clampPosition();
+    applyTransform();
+  }, [clampPosition, applyTransform]);
+
+  const onPointerUp = useCallback(() => {
+    dragRef.current.active = false;
   }, []);
 
   useEffect(() => {
@@ -71,7 +89,14 @@ export default function InfiniteColorRows() {
   }, [clampPosition, applyTransform]);
 
   return (
-    <div className={styles.viewport} ref={viewportRef}>
+    <div
+      className={styles.viewport}
+      ref={viewportRef}
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onPointerUp={onPointerUp}
+      onPointerCancel={onPointerUp}
+    >
       <div className={styles.track} ref={trackRef}>
         {ITEMS.map((c, i) => (
           <div
