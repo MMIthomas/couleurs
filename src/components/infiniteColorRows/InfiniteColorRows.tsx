@@ -1,9 +1,10 @@
 import { useRef, useEffect, useCallback, useState } from "react";
 import styles from "./InfiniteColorRows.module.scss";
 
+type Color = { name: string; hex: string; query: string };
 type Photos = Record<string, string[]>;
 
-const COLORS = [
+const COLORS: Color[] = [
   { name: "Rouge",      hex: "#E63946", query: "red" },
   { name: "Corail",     hex: "#FF6347", query: "coral" },
   { name: "Orange",     hex: "#F4A261", query: "orange" },
@@ -24,14 +25,53 @@ const COLORS = [
 
 const CLONES = 3;
 const ITEMS = Array.from({ length: CLONES }, () => COLORS).flat();
+const HEX_CHARS = "0123456789ABCDEF";
+const ALPHA_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+const SCRAMBLE_FRAMES = 20;
 
 export default function InfiniteColorRows() {
-  const trackRef = useRef<HTMLDivElement>(null);
+  const trackRef    = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
-  const posRef = useRef(0);
-  const dragRef = useRef({ active: false, startX: 0, startPos: 0 });
-  const [photos, setPhotos] = useState<Photos>({});
-  const [expandedIdx, setExpandedIdx] = useState<number | null>(null);
+  const posRef      = useRef(0);
+  const dragRef     = useRef({ active: false, startX: 0, startPos: 0 });
+  const hexRafRef   = useRef(0);
+  const nameRafRef  = useRef(0);
+
+  const [photos, setPhotos]         = useState<Photos>({});
+  const [activeColor, setActiveColor] = useState<Color | null>(null);
+  const [displayHex, setDisplayHex]   = useState("");
+  const [displayName, setDisplayName] = useState("");
+
+  const scramble = useCallback((
+    target: string,
+    setter: (s: string) => void,
+    rafRef: React.MutableRefObject<number>,
+  ) => {
+    cancelAnimationFrame(rafRef.current);
+    let frame = 0;
+    function tick() {
+      frame++;
+      const revealed = Math.floor((frame / SCRAMBLE_FRAMES) * target.length);
+      const text = target.split("").map((char, i) => {
+        if (char === "#") return char;
+        if (i < revealed) return char;
+        const pool = /[0-9A-F]/i.test(char) && target.startsWith("#")
+          ? HEX_CHARS
+          : ALPHA_CHARS;
+        return pool[Math.floor(Math.random() * pool.length)];
+      }).join("");
+      setter(text);
+      if (frame < SCRAMBLE_FRAMES) rafRef.current = requestAnimationFrame(tick);
+      else setter(target);
+    }
+    rafRef.current = requestAnimationFrame(tick);
+  }, []);
+
+  const activate = useCallback((color: Color) => {
+    setActiveColor(color);
+    scramble(color.hex, setDisplayHex, hexRafRef);
+    scramble(color.name, setDisplayName, nameRafRef);
+  }, [scramble]);
 
   const getItemWidth = useCallback(() => {
     const first = trackRef.current?.firstElementChild as HTMLElement | null;
@@ -40,10 +80,10 @@ export default function InfiniteColorRows() {
   }, []);
 
   const clampPosition = useCallback(() => {
-    const itemW = getItemWidth();
+    const itemW   = getItemWidth();
     const setSize = COLORS.length * itemW;
     if (posRef.current < -(CLONES - 1) * setSize) posRef.current += setSize;
-    if (posRef.current > -setSize) posRef.current -= setSize;
+    if (posRef.current > -setSize)                posRef.current -= setSize;
   }, [getItemWidth]);
 
   const applyTransform = useCallback(() => {
@@ -59,8 +99,7 @@ export default function InfiniteColorRows() {
 
   const onPointerMove = useCallback((e: React.PointerEvent) => {
     if (!dragRef.current.active) return;
-    const delta = e.clientX - dragRef.current.startX;
-    posRef.current = dragRef.current.startPos + delta;
+    posRef.current = dragRef.current.startPos + (e.clientX - dragRef.current.startX);
     clampPosition();
     applyTransform();
   }, [clampPosition, applyTransform]);
@@ -81,13 +120,6 @@ export default function InfiniteColorRows() {
       posRef.current += itemW;
       clampPosition();
       applyTransform();
-    } else if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      const idx = Number((e.currentTarget as HTMLElement).dataset.idx);
-      setExpandedIdx(prev => prev === idx ? null : idx);
-    } else if (e.key === "Escape") {
-      e.preventDefault();
-      setExpandedIdx(null);
     }
   }, [getItemWidth, clampPosition, applyTransform]);
 
@@ -102,18 +134,17 @@ export default function InfiniteColorRows() {
           );
           if (!res.ok) return;
           const data = await res.json();
-          setPhotos((prev) => ({
+          setPhotos(prev => ({
             ...prev,
             [query]: data.photos.map((p: { src: { medium: string } }) => p.src.medium),
           }));
-        } catch {
-        }
+        } catch {}
       })
     );
   }, []);
 
   useEffect(() => {
-    const itemW = getItemWidth();
+    const itemW   = getItemWidth();
     const setSize = COLORS.length * itemW;
     posRef.current = -setSize;
     applyTransform();
@@ -122,7 +153,6 @@ export default function InfiniteColorRows() {
   useEffect(() => {
     const el = viewportRef.current;
     if (!el) return;
-
     const onWheel = (e: WheelEvent) => {
       e.preventDefault();
       const LINE_HEIGHT = 40;
@@ -134,47 +164,58 @@ export default function InfiniteColorRows() {
       clampPosition();
       applyTransform();
     };
-
     el.addEventListener("wheel", onWheel, { passive: false });
     return () => el.removeEventListener("wheel", onWheel);
   }, [clampPosition, applyTransform]);
 
+  useEffect(() => () => {
+    cancelAnimationFrame(hexRafRef.current);
+    cancelAnimationFrame(nameRafRef.current);
+  }, []);
+
   return (
-    <div
-      className={styles.viewport}
-      ref={viewportRef}
-      onPointerDown={onPointerDown}
-      onPointerMove={onPointerMove}
-      onPointerUp={onPointerUp}
-      onPointerCancel={onPointerUp}
-    >
-      <div className={styles.track} ref={trackRef}>
-        {ITEMS.map((c, i) => (
-          <div
-            key={`${i}-${c.query}`}
-            className={`${styles.item}${expandedIdx === i ? ` ${styles.expanded}` : ""}`}
-            role="button"
-            tabIndex={0}
-            aria-label={`${c.name} ${c.hex}`}
-            aria-expanded={expandedIdx === i}
-            data-idx={i}
-            style={{ "--color": c.hex } as React.CSSProperties}
-            onKeyDown={onKeyDown}
-          >
+    <div className={styles.wrapper}>
+      <div
+        className={styles.viewport}
+        ref={viewportRef}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
+      >
+        <div className={styles.track} ref={trackRef}>
+          {ITEMS.map((c, i) => (
             <div
-              className={styles.swatch}
-            />
-            <div className={styles.panel}>
-              <span className={styles.hex}>{c.hex}</span>
-              <span className={styles.colorName}>{c.name}</span>
-              <div className={styles.photos}>
-                {(photos[c.query] ?? []).map((src, j) => (
-                  <img key={j} src={src} alt={c.name} loading="lazy" />
-                ))}
-              </div>
+              key={`${i}-${c.query}`}
+              className={`${styles.item}${activeColor?.query === c.query ? ` ${styles.active}` : ""}`}
+              role="button"
+              tabIndex={0}
+              aria-label={`${c.name} ${c.hex}`}
+              style={{ "--color": c.hex } as React.CSSProperties}
+              onMouseEnter={() => activate(c)}
+              onFocus={() => activate(c)}
+              onKeyDown={onKeyDown}
+            >
+              <div className={styles.swatch} />
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
+      </div>
+
+      <div
+        className={`${styles.info}${activeColor ? ` ${styles.infoVisible}` : ""}`}
+        aria-live="polite"
+        style={{ "--color": activeColor?.hex ?? "transparent" } as React.CSSProperties}
+      >
+        <div className={styles.infoText}>
+          <span className={styles.hex}>{displayHex}</span>
+          <span className={styles.colorName}>{displayName}</span>
+        </div>
+        <div className={styles.photos}>
+          {(photos[activeColor?.query ?? ""] ?? []).map((src, j) => (
+            <img key={`${activeColor?.query}-${j}`} src={src} alt={activeColor?.name} loading="lazy" />
+          ))}
+        </div>
       </div>
     </div>
   );
