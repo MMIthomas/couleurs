@@ -1,5 +1,7 @@
-import { useRef, useEffect, useCallback } from "react";
+import { useRef, useEffect, useCallback, useState } from "react";
 import styles from "./InfiniteColorRows.module.scss";
+
+type Photos = Record<string, string[]>;
 
 const COLORS = [
   { name: "Rouge",  hex: "#E63946", query: "red" },
@@ -24,6 +26,7 @@ export default function InfiniteColorRows() {
   const viewportRef = useRef<HTMLDivElement>(null);
   const posRef = useRef(0);
   const dragRef = useRef({ active: false, startX: 0, startPos: 0 });
+  const [photos, setPhotos] = useState<Photos>({});
 
   const getItemWidth = useCallback(() => {
     const first = trackRef.current?.firstElementChild as HTMLElement | null;
@@ -75,6 +78,21 @@ export default function InfiniteColorRows() {
       applyTransform();
     }
   }, [getItemWidth, clampPosition, applyTransform]);
+
+  useEffect(() => {
+    const apiKey = import.meta.env.VITE_API_KEY as string;
+    COLORS.forEach(async ({ query }) => {
+      const res = await fetch(
+        `https://api.pexels.com/v1/search?query=${query}&per_page=3&orientation=portrait`,
+        { headers: { Authorization: apiKey } }
+      );
+      const data = await res.json();
+      setPhotos((prev) => ({
+        ...prev,
+        [query]: data.photos.map((p: { src: { medium: string } }) => p.src.medium),
+      }));
+    });
+  }, []);
 
   useEffect(() => {
     const itemW = getItemWidth();
@@ -129,7 +147,11 @@ export default function InfiniteColorRows() {
             <div className={styles.panel}>
               <span className={styles.hex}>{c.hex}</span>
               <span className={styles.colorName}>{c.name}</span>
-              <div className={styles.photos} />
+              <div className={styles.photos}>
+                {(photos[c.query] ?? []).map((src, j) => (
+                  <img key={j} src={src} alt={c.name} />
+                ))}
+              </div>
             </div>
           </div>
         ))}
