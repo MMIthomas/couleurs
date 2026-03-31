@@ -25,19 +25,20 @@ const COLORS: Color[] = [
 
 const CLONES = 3;
 const ITEMS = Array.from({ length: CLONES }, () => COLORS).flat();
-const HEX_CHARS = "0123456789ABCDEF";
-const ALPHA_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+const HEX_CHARS   = "0123456789ABCDEF";
+const ALPHA_CHARS  = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 const SCRAMBLE_FRAMES = 20;
 
 export default function InfiniteColorRows() {
-  const trackRef    = useRef<HTMLDivElement>(null);
-  const viewportRef = useRef<HTMLDivElement>(null);
-  const posRef      = useRef(0);
-  const dragRef     = useRef({ active: false, startX: 0, startPos: 0 });
-  const hexRafRef   = useRef(0);
-  const nameRafRef  = useRef(0);
+  const trackRef     = useRef<HTMLDivElement>(null);
+  const viewportRef  = useRef<HTMLDivElement>(null);
+  const posRef       = useRef(0);
+  const dragRef      = useRef({ active: false, startX: 0, startPos: 0 });
+  const hexRafRef    = useRef(0);
+  const nameRafRef   = useRef(0);
+  const scrollRafRef = useRef(0);
 
-  const [photos, setPhotos]         = useState<Photos>({});
+  const [photos, setPhotos]           = useState<Photos>({});
   const [activeColor, setActiveColor] = useState<Color | null>(null);
   const [displayHex, setDisplayHex]   = useState("");
   const [displayName, setDisplayName] = useState("");
@@ -45,7 +46,7 @@ export default function InfiniteColorRows() {
   const scramble = useCallback((
     target: string,
     setter: (s: string) => void,
-    rafRef: React.MutableRefObject<number>,
+    rafRef: React.RefObject<number>,
   ) => {
     cancelAnimationFrame(rafRef.current);
     let frame = 0;
@@ -55,9 +56,7 @@ export default function InfiniteColorRows() {
       const text = target.split("").map((char, i) => {
         if (char === "#") return char;
         if (i < revealed) return char;
-        const pool = /[0-9A-F]/i.test(char) && target.startsWith("#")
-          ? HEX_CHARS
-          : ALPHA_CHARS;
+        const pool = target.startsWith("#") ? HEX_CHARS : ALPHA_CHARS;
         return pool[Math.floor(Math.random() * pool.length)];
       }).join("");
       setter(text);
@@ -67,15 +66,9 @@ export default function InfiniteColorRows() {
     rafRef.current = requestAnimationFrame(tick);
   }, []);
 
-  const activate = useCallback((color: Color) => {
-    setActiveColor(color);
-    scramble(color.hex, setDisplayHex, hexRafRef);
-    scramble(color.name, setDisplayName, nameRafRef);
-  }, [scramble]);
-
   const getItemWidth = useCallback(() => {
     const first = trackRef.current?.firstElementChild as HTMLElement | null;
-    if (!first) return 132;
+    if (!first) return 172;
     return first.offsetWidth + 12;
   }, []);
 
@@ -87,12 +80,59 @@ export default function InfiniteColorRows() {
   }, [getItemWidth]);
 
   const applyTransform = useCallback(() => {
-    if (trackRef.current) {
+    if (trackRef.current)
       trackRef.current.style.transform = `translateX(${posRef.current}px)`;
-    }
   }, []);
 
+  const scrollTo = useCallback((target: number) => {
+    cancelAnimationFrame(scrollRafRef.current);
+    function lerp() {
+      const diff = target - posRef.current;
+      if (Math.abs(diff) < 0.5) {
+        posRef.current = target;
+        applyTransform();
+        return;
+      }
+      posRef.current += diff * 0.1;
+      applyTransform();
+      scrollRafRef.current = requestAnimationFrame(lerp);
+    }
+    scrollRafRef.current = requestAnimationFrame(lerp);
+  }, [applyTransform]);
+
+  const computeScrollTarget = useCallback((itemIdx: number): number => {
+    const itemW = getItemWidth();
+    const vw    = viewportRef.current?.clientWidth ?? 0;
+    const setSize = COLORS.length * itemW;
+    const base  = vw / 2 - 6 - (itemIdx + 0.5) * itemW;
+    const candidates = [base - setSize, base, base + setSize];
+    return candidates.reduce((best, c) =>
+      Math.abs(c - posRef.current) < Math.abs(best - posRef.current) ? c : best
+    );
+  }, [getItemWidth]);
+
+  const activate = useCallback((color: Color) => {
+    const itemW = getItemWidth();
+    const vw    = viewportRef.current?.clientWidth ?? 0;
+    const currentCenter = (-posRef.current + vw / 2) / itemW;
+
+    let nearestIdx = 0;
+    let minDist    = Infinity;
+    ITEMS.forEach((item, i) => {
+      if (item.query === color.query) {
+        const dist = Math.abs(i - currentCenter);
+        if (dist < minDist) { minDist = dist; nearestIdx = i; }
+      }
+    });
+
+    setActiveColor(color);
+    scramble(color.hex, setDisplayHex, hexRafRef);
+    scramble(color.name, setDisplayName, nameRafRef);
+    scrollTo(computeScrollTarget(nearestIdx));
+  }, [scramble, scrollTo, computeScrollTarget, getItemWidth]);
+
   const onPointerDown = useCallback((e: React.PointerEvent) => {
+    cancelAnimationFrame(scrollRafRef.current);
     dragRef.current = { active: true, startX: e.clientX, startPos: posRef.current };
     (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
   }, []);
@@ -112,11 +152,13 @@ export default function InfiniteColorRows() {
     const itemW = getItemWidth();
     if (e.key === "ArrowRight") {
       e.preventDefault();
+      cancelAnimationFrame(scrollRafRef.current);
       posRef.current -= itemW;
       clampPosition();
       applyTransform();
     } else if (e.key === "ArrowLeft") {
       e.preventDefault();
+      cancelAnimationFrame(scrollRafRef.current);
       posRef.current += itemW;
       clampPosition();
       applyTransform();
@@ -155,6 +197,7 @@ export default function InfiniteColorRows() {
     if (!el) return;
     const onWheel = (e: WheelEvent) => {
       e.preventDefault();
+      cancelAnimationFrame(scrollRafRef.current);
       const LINE_HEIGHT = 40;
       const delta =
         e.deltaMode === 1 ? e.deltaY * LINE_HEIGHT :
@@ -171,6 +214,7 @@ export default function InfiniteColorRows() {
   useEffect(() => () => {
     cancelAnimationFrame(hexRafRef.current);
     cancelAnimationFrame(nameRafRef.current);
+    cancelAnimationFrame(scrollRafRef.current);
   }, []);
 
   return (

@@ -20,7 +20,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 24px 12px;
+  padding: 40px 12px;
   will-change: transform;
 }
 
@@ -47,8 +47,8 @@
 }
 
 .swatch {
-  width: 120px;
-  height: 120px;
+  width: 160px;
+  height: 160px;
   background-color: var(--color);
   border-radius: 10px;
   flex-shrink: 0;
