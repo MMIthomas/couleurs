@@ -1,6 +1,6 @@
 .viewport {
   width: 100%;
-  overflow: hidden;
+  overflow-x: clip;
   cursor: grab;
   user-select: none;
   touch-action: none;
@@ -37,7 +37,8 @@
   }
 
   &:focus-visible {
-    box-shadow: 0 0 0 3px var(--color, #457B9D);
+    outline: 3px solid var(--color, #457B9D);
+    outline-offset: 3px;
   }
 }
 
