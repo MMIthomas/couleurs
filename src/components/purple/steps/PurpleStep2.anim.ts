@@ -4,23 +4,19 @@ import { ANIM1 } from "./PurpleStep1.anim";
 
 export interface Step2Widths {
   pierreWidth: number;
-  galaxieWidth: number;
 }
 
 export function initStep2(step2: PurpleStep2Refs): Step2Widths {
   gsap.set(step2.container, { opacity: 0 });
   gsap.set(step2.flower, { x: -1000, y: 1000, rotation: 45, transformOrigin: "bottom left" });
   gsap.set(step2.amethyst, { y: "-110vh" });
-
   // Pré-mesure AVANT tout transform
   const pierreWidth = step2.pierreSticker.offsetWidth;
-  const galaxieWidth = step2.galaxieSticker.offsetWidth;
 
   // Fixe la largeur du wrapper à celle de "fleur" (état initial)
   gsap.set(step2.stickerWrapper, { width: step2.fleurSticker.offsetWidth });
   // Stickers suivants démarrent en dessous du clip
-  gsap.set(step2.pierreSticker,  { y: "100%" });
-  gsap.set(step2.galaxieSticker, { y: "100%" });
+  gsap.set(step2.pierreSticker,  { y: "100%", transformOrigin: "center center" });
 
   // Animation vent — indépendante du scrub
   gsap.to(step2.flower, {
@@ -31,7 +27,7 @@ export function initStep2(step2: PurpleStep2Refs): Step2Widths {
     yoyo: true,
   });
 
-  return { pierreWidth, galaxieWidth };
+  return { pierreWidth };
 }
 
 export function buildStep2Enter(
@@ -46,7 +42,6 @@ export function buildStep2Enter(
     .from(step2.fleurSticker, { y: "100%", ease: "power3.out", duration: 0.5 }, "step2Enter+=0.08")
     .from(step2.questionMark, { y: "100%", ease: "power3.out", duration: 0.5 }, "step2Enter+=0.16")
 
-    // Swap 1 : fleur → pierre + chute améthyste (one-shot, non-scrubée)
     .addLabel("stickerSwap1", "step2Enter+=1")
     .to(step2.stickerWrapper, { width: widths.pierreWidth,  duration: 0.4, ease: "power2.inOut" }, "stickerSwap1")
     .to(step2.fleurSticker,   { y: "-100%", ease: "power3.in",  duration: 0.3 }, "stickerSwap1")
@@ -64,9 +59,17 @@ export function buildStep2Enter(
       };
     })(), [], "stickerSwap1")
 
-    // Swap 2 : pierre → galaxie
-    .addLabel("stickerSwap2", "stickerSwap1+=1")
-    .to(step2.stickerWrapper, { width: widths.galaxieWidth, duration: 0.4, ease: "power2.inOut" }, "stickerSwap2")
-    .to(step2.pierreSticker,  { y: "-100%", ease: "power3.in",  duration: 0.3 }, "stickerSwap2")
-    .to(step2.galaxieSticker, { y: "0%",    ease: "power3.out", duration: 0.3 }, "stickerSwap2+=0.05");
+    // Zoom "pierre" → blanc couvre tout
+    .addLabel("pierreZoom", "stickerSwap1+=0.8")
+    .set([step2.stickerWrapper, step2.container], { overflow: "visible" }, "pierreZoom")
+    .set(step2.fleurSticker, { opacity: 0 }, "pierreZoom")
+    .to(step2.pierreSticker, {
+      scale: 50,
+      x: 2500,
+      rotation: 90,
+      borderRadius: 0,
+      duration: 2,
+      ease: "power2.in",
+    }, "pierreZoom")
+    .set(step2.pierreSticker, { opacity: 0 }, "pierreZoom+=2");
 }

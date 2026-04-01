@@ -7,8 +7,10 @@ import ScrollBar from "./scrollBar/ScrollBar";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import PurpleStep1, { type PurpleStep1Refs } from "./steps/PurpleStep1";
 import PurpleStep2, { type PurpleStep2Refs } from "./steps/PurpleStep2";
+import PurpleStep3, { type PurpleStep3Refs } from "./steps/PurpleStep3";
 import { initStep1, buildStep1Enter, buildStep1Exit } from "./steps/PurpleStep1.anim";
 import { initStep2, buildStep2Enter } from "./steps/PurpleStep2.anim";
+import { initStep3, buildStep3Enter } from "./steps/PurpleStep3.anim";
 
 gsap.registerPlugin(useGSAP, SplitText, ScrollTrigger);
 
@@ -19,14 +21,17 @@ export default function Purple() {
   const stepsWrapper = useRef<HTMLDivElement>(null);
   const step1Ref = useRef<PurpleStep1Refs>(null);
   const step2Ref = useRef<PurpleStep2Refs>(null);
+  const step3Ref = useRef<PurpleStep3Refs>(null);
 
   useGSAP(
     () => {
       const step1 = step1Ref.current!;
       const step2 = step2Ref.current!;
+      const step3 = step3Ref.current!;
 
       const split1 = initStep1(step1);
       const widths = initStep2(step2);
+      const split3 = initStep3(step3);
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -41,9 +46,11 @@ export default function Purple() {
       buildStep1Enter(tl, split1, step1);
       buildStep1Exit(tl, split1, step1);
       buildStep2Enter(tl, step2, widths);
+      buildStep3Enter(tl, step3, split3);
 
       return () => {
         split1.revert();
+        split3.revert();
       };
     },
     { scope: container },
@@ -54,6 +61,7 @@ export default function Purple() {
       <div className={styles.purple__steps} ref={stepsWrapper}>
         <PurpleStep1 ref={step1Ref} />
         <PurpleStep2 ref={step2Ref} />
+        <PurpleStep3 ref={step3Ref} />
       </div>
       <ScrollBar container={container} />
     </section>

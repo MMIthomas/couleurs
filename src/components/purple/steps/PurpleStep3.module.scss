@@ -1,0 +1,102 @@
+$purple-main: #7e3fe0;
+
+.purple__step3 {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: #fff;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &__text {
+    position: relative;
+    z-index: 2;
+    font-size: 5rem;
+    font-weight: 800;
+    font-family: "Hind", sans-serif;
+    color: $purple-main;
+  }
+}
+
+.mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+// ── Wrappers ──────────────────────────────────────────────────────────────
+.imgWrapper {
+  position: absolute;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.wrapTL {
+  top: 6%;
+  left: 4%;
+  width: 420px;
+  rotate: -6deg;
+}
+
+.wrapTR {
+  top: 6%;
+  right: 4%;
+  width: 420px;
+  rotate: 5deg;
+}
+
+.wrapBL {
+  bottom: 6%;
+  left: 4%;
+  width: 300px;
+  rotate: 4deg;
+}
+
+.wrapBR {
+  bottom: 6%;
+  right: 4%;
+  width: 420px;
+  rotate: -5deg;
+}
+
+// ── Image ─────────────────────────────────────────────────────────────────
+.img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.imgTL { aspect-ratio: 3 / 2; }
+.imgTR { aspect-ratio: 3 / 2; }
+.imgBL { aspect-ratio: 2 / 3; }
+.imgBR { aspect-ratio: 3 / 2; }
+
+// ── Overlay ───────────────────────────────────────────────────────────────
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.78) 0%,
+    rgba(0, 0, 0, 0.35) 55%,
+    transparent 100%
+  );
+  display: flex;
+  align-items: flex-end;
+  padding: 20px 22px;
+  clip-path: inset(100% 0 0 0 round 16px);
+}
+
+.overlayText {
+  color: #fff;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  font-family: "Hind", sans-serif;
+  font-weight: 400;
+  margin: 0;
+}
