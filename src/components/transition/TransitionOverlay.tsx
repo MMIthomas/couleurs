@@ -6,13 +6,13 @@ import { useTransition } from "../../context/TransitionContext";
 import styles from "./TransitionOverlay.module.scss";
 
 const COLORS = [
-  "#E84040", // rouge
-  "#F47C38", // orange
-  "#F5D040", // jaune
-  "#4DC85A", // vert
-  "#3BADD4", // cyan
-  "#4A67E3", // bleu
-  "#8B45D4", // violet
+  "#E84040",
+  "#F47C38",
+  "#F5D040",
+  "#4DC85A",
+  "#3BADD4",
+  "#4A67E3",
+  "#8B45D4",
 ];
 
 const N = COLORS.length;

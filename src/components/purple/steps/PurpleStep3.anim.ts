@@ -26,7 +26,6 @@ export function buildStep3Enter(
   tl.addLabel("step3Enter", "pierreZoom+=2")
     .set(step3.container, { opacity: 1 }, "step3Enter")
 
-    // Chars montent depuis le bas avec stagger
     .to(split.chars, {
       y: 0,
       duration: reducedMotion ? 0.001 : 0.7,
@@ -34,14 +33,12 @@ export function buildStep3Enter(
       stagger: reducedMotion ? 0 : 0.03,
     }, "step3Enter")
 
-    // Images depuis les 4 coins
     .addLabel("step3Imgs", "step3Enter+=2")
     .to(step3.wrapTL, { x: 0, y: 0, duration: d, ease: "power3.out" }, "step3Imgs")
     .to(step3.wrapTR, { x: 0, y: 0, duration: d, ease: "power3.out" }, "step3Imgs+=0.08")
     .to(step3.wrapBL, { x: 0, y: 0, duration: d, ease: "power3.out" }, "step3Imgs+=0.16")
     .to(step3.wrapBR, { x: 0, y: 0, duration: d, ease: "power3.out" }, "step3Imgs+=0.24")
 
-    // Float infini — désactivé si prefers-reduced-motion
     .call(() => {
       if (reducedMotion) return;
       gsap.to(step3.wrapTL, { y: -14, rotation: "+=1.5", duration: 2.2, ease: "sine.inOut", repeat: -1, yoyo: true });
@@ -50,6 +47,5 @@ export function buildStep3Enter(
       gsap.to(step3.wrapBR, { y: -12, rotation: "+=2",   duration: 2.4, ease: "sine.inOut", repeat: -1, yoyo: true, delay: 0.2 });
     }, [], "step3Imgs+=1.2")
 
-    // Petit hold avant de relâcher le pin
     .set({}, {}, "step3Imgs+=2");
 }

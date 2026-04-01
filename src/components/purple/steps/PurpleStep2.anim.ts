@@ -10,7 +10,6 @@ export function initStep2(step2: PurpleStep2Refs, reducedMotion: boolean): Step2
   gsap.set(step2.container, { opacity: 0 });
   gsap.set(step2.flower, { x: -1000, y: 1000, rotation: 45, transformOrigin: "bottom left" });
   gsap.set(step2.amethyst, { y: "-110vh" });
-  // Pré-mesure AVANT tout transform
   const pierreWidth = step2.pierreSticker.offsetWidth;
 
   // Fixe la largeur du wrapper à celle de "fleur" (état initial)
@@ -18,7 +17,6 @@ export function initStep2(step2: PurpleStep2Refs, reducedMotion: boolean): Step2
   // Stickers suivants démarrent en dessous du clip
   gsap.set(step2.pierreSticker,  { y: "100%", transformOrigin: "center center" });
 
-  // Animation vent — indépendante du scrub
   if (!reducedMotion) {
     gsap.to(step2.flower, {
       rotation: 55,
@@ -63,7 +61,6 @@ export function buildStep2Enter(
       };
     })(), [], "stickerSwap1")
 
-    // Zoom "pierre" → blanc couvre tout
     .addLabel("pierreZoom", "stickerSwap1+=0.8")
     .set([step2.stickerWrapper, step2.container], { overflow: "visible" }, "pierreZoom")
     .set(step2.fleurSticker, { opacity: 0 }, "pierreZoom")

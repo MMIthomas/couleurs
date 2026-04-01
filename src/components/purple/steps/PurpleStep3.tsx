@@ -84,7 +84,7 @@ const PurpleStep3 = forwardRef<PurpleStep3Refs>((_, ref) => {
           className={`${styles.imgWrapper} ${wrapClass}`}
           ref={wrapRefs[i]}
           role="button"
-          tabIndex={0}
+          tabIndex={-1}
           aria-label={IMAGES[i].text}
           onMouseEnter={() => handleEnter(wrapRefs[i].current!, origin)}
           onMouseLeave={() => handleLeave(wrapRefs[i].current!, origin)}

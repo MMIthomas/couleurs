@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import { useTransition } from "../../context/TransitionContext";
 
 interface TransitionLinkProps {
@@ -7,20 +8,26 @@ interface TransitionLinkProps {
   "aria-label"?: string;
 }
 
-export default function TransitionLink({ to, children, className, "aria-label": ariaLabel }: TransitionLinkProps) {
-  const { navigateTo } = useTransition();
+const TransitionLink = forwardRef<HTMLAnchorElement, TransitionLinkProps>(
+  ({ to, children, className, "aria-label": ariaLabel }, ref) => {
+    const { navigateTo } = useTransition();
 
-  return (
-    <a
-      href={to}
-      className={className}
-      aria-label={ariaLabel}
-      onClick={(e) => {
-        e.preventDefault();
-        navigateTo(to);
-      }}
-    >
-      {children}
-    </a>
-  );
-}
+    return (
+      <a
+        href={to}
+        ref={ref}
+        className={className}
+        aria-label={ariaLabel}
+        onClick={(e) => {
+          e.preventDefault();
+          navigateTo(to);
+        }}
+      >
+        {children}
+      </a>
+    );
+  }
+);
+
+TransitionLink.displayName = "TransitionLink";
+export default TransitionLink;

@@ -26,7 +26,6 @@ $purple-main: #7e3fe0;
   vertical-align: bottom;
 }
 
-// ── Wrappers ──────────────────────────────────────────────────────────────
 .imgWrapper {
   position: absolute;
   border-radius: 16px;
@@ -68,7 +67,6 @@ $purple-main: #7e3fe0;
   rotate: -5deg;
 }
 
-// ── Image ─────────────────────────────────────────────────────────────────
 .img {
   width: 100%;
   height: 100%;
@@ -81,7 +79,6 @@ $purple-main: #7e3fe0;
 .imgBL { aspect-ratio: 2 / 3; }
 .imgBR { aspect-ratio: 3 / 2; }
 
-// ── Overlay ───────────────────────────────────────────────────────────────
 .overlay {
   position: absolute;
   inset: 0;

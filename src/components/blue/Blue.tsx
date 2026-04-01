@@ -118,7 +118,7 @@ const chapters = [
     animType: "digital",
     images: [
       { src: navyImg, size: "380px", top: "15%", left: "55%", mTop: "15%", mLeft: "80%", rotate: 0 },
-      { src: gendarmerieImg, size: "750px", top: "55%", left: "10%", mTop: "65%", mLeft: "40%", rotate: 0 }, // Plus grande la voiture !
+      { src: gendarmerieImg, size: "750px", top: "55%", left: "10%", mTop: "65%", mLeft: "40%", rotate: 0 },
       { src: securite2Img, size: "220px", top: "10%", left: "15%", mTop: "25%", mLeft: "20%", rotate: -10 },
     ],
   },
@@ -133,12 +133,9 @@ function revealImages(floaters: HTMLElement[], animType: string, vh: number) {
   floaters.forEach((img, i) => {
     const delay = i * 0.12;
 
-    // On met à jour les CSS variables --top/--left pour mobile si besoin
-    // L'idée est de laisser le CSS handle la position de base et GSAP le décorréler un peu
     gsap.set(img, { opacity: 1, scale: baseScale });
 
     switch (animType) {
-      // Lapis : révélation par un masque qui monte (comme un voile qui se lève)
       case "ancient":
         gsap.fromTo(
           img,
@@ -293,7 +290,7 @@ function revealImages(floaters: HTMLElement[], animType: string, vh: number) {
             {
               xPercent: -150,
               duration: 3.5,
-              delay: 0.1, // Démarrage rapide
+              delay: 0.1,
               ease: "none",
               overwrite: true,
             }
@@ -642,7 +639,6 @@ export default function Blue() {
     >
       <div className={styles.blue_sticky} ref={stickyRef}>
 
-        {/* Frise chronologique */}
         <div className={styles.timeline_track}>
           <div className={styles.timeline_progress} ref={progressRef} />
           <div className={styles.timeline_dots}>
@@ -658,7 +654,6 @@ export default function Blue() {
         <div className={styles.viewport}>
           <div className={styles.horizontal_wrapper} ref={wrapperRef}>
 
-            {/* Intro */}
             <section className={`${styles.section} ${styles.intro}`}>
               <div className={styles.intro__noise} />
               <h2 className={styles.intro__title}>Bleu</h2>
@@ -676,7 +671,6 @@ export default function Blue() {
               </div>
             </section>
 
-            {/* Chapitres */}
             {chapters.map((chapter) => (
               <section
                 key={chapter.id}
@@ -684,7 +678,6 @@ export default function Blue() {
               >
                 <div className={styles.grid} />
 
-                {/* Images flottantes — une par position, traitement CSS par thème */}
                 <div className={styles.floating_images}>
                   {chapter.images.map((img: any, idx) => (
                     <div

@@ -36,6 +36,9 @@ export default function Purple() {
       const widths = initStep2(step2, reducedMotion);
       const split3 = initStep3(step3);
 
+      const step3ProgressRef = { value: 1 };
+      const step3Cards = [step3.wrapTL, step3.wrapTR, step3.wrapBL, step3.wrapBR];
+
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: stepsWrapper.current,
@@ -43,6 +46,11 @@ export default function Purple() {
           end: `+=${TOTAL_SCROLL}`,
           pin: true,
           scrub: 1,
+          onUpdate: (self) => {
+            const isStep3 = self.progress >= step3ProgressRef.value;
+            stepsWrapper.current!.setAttribute("data-step3-active", String(isStep3));
+            step3Cards.forEach((el) => { el.tabIndex = isStep3 ? 0 : -1; });
+          },
         },
       });
 
@@ -50,6 +58,8 @@ export default function Purple() {
       buildStep1Exit(tl, split1, step1, reducedMotion);
       buildStep2Enter(tl, step2, widths, reducedMotion);
       buildStep3Enter(tl, step3, split3, reducedMotion);
+
+      step3ProgressRef.value = tl.labels["step3Enter"] / tl.duration();
 
       tl.to(scrollBarRef.current, { opacity: 0, duration: 0.3, ease: "power2.in" }, "step3Enter");
 
