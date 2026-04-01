@@ -124,7 +124,7 @@ const chapters = [
   },
 ];
 
-const TOTAL_PANELS = 1 + chapters.length; // 7
+const TOTAL_PANELS = 1 + chapters.length;
 
 function revealImages(floaters: HTMLElement[], animType: string, vh: number) {
   const isMobile = window.innerWidth <= 768;
@@ -420,19 +420,6 @@ export default function Blue() {
       });
     });
 
-    function resetAnims() {
-      animStates.fill("none");
-      gsap.set(
-        q(
-          `.${styles.intro__title}, .${styles.chapter__title}, .${styles.chapter__desc}, .${styles.chapter__meta}, .${styles.chapter__symbol}`
-        ),
-        { opacity: 0 }
-      );
-      chapterEls.forEach((el) => {
-        if (!el) return;
-        gsap.set(el.floaters, { opacity: 0 });
-      });
-    }
 
     function update() {
       if (!outer || !sticky || !wrapper || !prog) return;
@@ -444,16 +431,16 @@ export default function Blue() {
       const scrollDist = (TOTAL_PANELS - 1) * vh;
       const maxX = (TOTAL_PANELS - 1) * vw;
 
+      let progress = 0;
+      const scrolled = -outerTop;
+
       if (outerTop > 0) {
         if (sticky.style.position !== "relative")
           Object.assign(sticky.style, { position: "relative", top: "0", left: "0", width: "100%" });
         gsap.set(wrapper, { x: 0 });
         gsap.set(prog, { scaleX: 0 });
-        if (animStates[0] !== "none") resetAnims();
-        return;
-      }
-
-      if (-outerTop >= scrollDist) {
+        progress = 0;
+      } else if (scrolled >= scrollDist) {
         if (sticky.style.position !== "absolute")
           Object.assign(sticky.style, {
             position: "absolute",
@@ -463,21 +450,20 @@ export default function Blue() {
           });
         gsap.set(wrapper, { x: -maxX });
         gsap.set(prog, { scaleX: 1 });
-        return;
+        progress = 1;
+      } else {
+        Object.assign(sticky.style, {
+          position: "fixed",
+          top: "0",
+          left: `${rect.left}px`,
+          width: `${rect.width}px`,
+        });
+        progress = Math.max(0, Math.min(1, scrolled / scrollDist));
+        gsap.set(wrapper, { x: -maxX * progress });
+        gsap.set(prog, { scaleX: progress });
       }
 
-      Object.assign(sticky.style, {
-        position: "fixed",
-        top: "0",
-        left: `${rect.left}px`,
-        width: `${rect.width}px`,
-      });
-
-      const scrolled = -outerTop;
-      const progress = Math.max(0, Math.min(1, scrolled / scrollDist));
-      gsap.set(wrapper, { x: -maxX * progress });
-      gsap.set(prog, { scaleX: progress });
-
+      // Toujours exécuter la boucle pour synchroniser animStates, même aux bords
       for (let i = -1; i < chapters.length; i++) {
         const center = (i + 1) / (TOTAL_PANELS - 1);
         const range = 0.45 / (TOTAL_PANELS - 1);
