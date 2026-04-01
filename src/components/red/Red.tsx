@@ -1,5 +1,8 @@
 import styles from "./Red.module.scss";
 import { useRef } from "react";
+import spidermanImg from "../../assets/red/spiderman.png";
+import dexterImg from "../../assets/red/dexter.png";
+import roseVideo from "../../assets/red/rose.mp4";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
@@ -224,7 +227,6 @@ export default function Red() {
         };
       };
 
-      // Repositionne d'abord le centre sur "rouge" sans changer le rayon
       tl.to(bg, {
         clipPath: () => {
           const { cx, cy } = getCenter();
@@ -234,7 +236,6 @@ export default function Red() {
         duration: 0.01,
       }, "<");
 
-      // Puis rétrécit depuis cette position
       tl.to(bg, {
         clipPath: () => {
           const { cx, cy } = getCenter();
@@ -270,25 +271,25 @@ export default function Red() {
 
           <div className={styles["media-wrapper"]}>
             <img
-              src="/src/assets/red/spiderman.png"
+              src={spidermanImg}
               alt="Spiderman"
               className={`${styles.scrollImg} ${styles["img-spiderman"]}`}
               ref={spidermanRef}
             />
             <img
-              src="/src/assets/red/dexter.png"
+              src={dexterImg}
               alt="Dexter"
               className={`${styles.scrollImg} ${styles["img-dexter1"]}`}
               ref={dexter1Ref}
             />
             <img
-              src="/src/assets/red/dexter.png"
+              src={dexterImg}
               alt="Dexter"
               className={`${styles.scrollImg} ${styles["img-dexter2"]}`}
               ref={dexter2Ref}
             />
             <video
-              src="/src/assets/red/rose.mp4"
+              src={roseVideo}
               className={`${styles.scrollVideo} ${styles["video-rose"]}`}
               autoPlay
               loop
