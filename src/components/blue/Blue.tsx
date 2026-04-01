@@ -463,7 +463,6 @@ export default function Blue() {
         gsap.set(prog, { scaleX: progress });
       }
 
-      // Toujours exécuter la boucle pour synchroniser animStates, même aux bords
       for (let i = -1; i < chapters.length; i++) {
         const center = (i + 1) / (TOTAL_PANELS - 1);
         const range = 0.45 / (TOTAL_PANELS - 1);
