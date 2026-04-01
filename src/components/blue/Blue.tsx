@@ -82,7 +82,7 @@ const chapters = [
     title: "Le Peuple",
     year: "1873",
     era: "Industriel",
-    desc: "Avec l'indigo et l'avènement du Denim, le bleu se démocratise. C'est désormais la couleur du travail, du repos et du rêve universel — porté par des millions de mains calleuses.",
+    desc: "Avec l'indigo et l'avènement du Denim, le bleu se démocratise. C'est désormais la couleur du travail, du repos et du rêve universel, porté par des millions de mains calleuses.",
     symbol: "▨",
     theme: styles.theme_denim,
     animType: "industrial",
@@ -97,7 +97,7 @@ const chapters = [
     title: "L'Absolu",
     year: "1960",
     era: "Moderne",
-    desc: "Yves Klein brevète l'International Klein Blue. Une couleur si pure qu'elle abolit la forme. Le bleu cesse d'être une teinte — il devient une expérience spirituelle, immatérielle.",
+    desc: "Yves Klein brevète l'International Klein Blue. Une couleur si pure qu'elle abolit la forme. Le bleu cesse d'être une teinte, il devient une expérience spirituelle, immatérielle.",
     symbol: "○",
     theme: styles.theme_klein,
     animType: "absolute",
@@ -132,7 +132,7 @@ function revealImages(floaters: HTMLElement[], animType: string, vh: number) {
 
   floaters.forEach((img, i) => {
     const delay = i * 0.12;
-    
+
     // On met à jour les CSS variables --top/--left pour mobile si besoin
     // L'idée est de laisser le CSS handle la position de base et GSAP le décorréler un peu
     gsap.set(img, { opacity: 1, scale: baseScale });
