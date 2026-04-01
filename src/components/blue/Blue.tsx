@@ -4,15 +4,27 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import { useGSAP } from "@gsap/react";
-import lapisImg from "../../assets/blue/lapis.png";
-import woadImg from "../../assets/blue/woad.png";
+
+import lapisImg from "../../assets/blue/lapis/lapis.png";
+import lapisImg2 from "../../assets/blue/lapis/lapis2.jpg";
+import lapisImg3 from "../../assets/blue/lapis/lapis3.jpg";
+
 import navyImg from "../../assets/blue/navy.png";
-import denimImg from "../../assets/blue/denim.png";
+
+import denimImg from "../../assets/blue/jeans/denim.png";
+import jeansImg from "../../assets/blue/jeans/jeans.jpg";
+import denim2Img from "../../assets/blue/jeans/denim2.jpg";
+
 import kleinImg from "../../assets/blue/klein.png";
+
 import couronneImg from "../../assets/blue/sacre/couronne_or.png";
 import royalImg from "../../assets/blue/sacre/royal.png";
 import sceptreImg from "../../assets/blue/sacre/sceptre.png";
+
 import vikingRobeImg from "../../assets/blue/viking/viking_robe.svg";
+import woadImg from "../../assets/blue/viking/woad.png";
+import vikingb from "../../assets/blue/viking/vikingB.jpg";
+
 import gendarmerieImg from "../../assets/blue/force/gendarmerie-sport.png";
 import securite2Img from "../../assets/blue/force/securite2.png";
 
@@ -30,9 +42,9 @@ const chapters = [
     theme: styles.theme_lapis,
     animType: "ancient",
     images: [
-      { src: lapisImg, size: "300px", top: "12%", left: "62%", rotate: -4 },
-      { src: lapisImg, size: "190px", top: "55%", left: "80%", rotate: 8 },
-      { src: lapisImg, size: "130px", top: "20%", left: "85%", rotate: 2 },
+      { src: lapisImg, size: "300px", top: "12%", left: "62%", mTop: "5%", mLeft: "25%", rotate: -4 },
+      { src: lapisImg2, size: "190px", top: "55%", left: "80%", mTop: "15%", mLeft: "75%", rotate: 8 },
+      { src: lapisImg3, size: "130px", top: "20%", left: "85%", mTop: "75%", mLeft: "20%", rotate: 2 },
     ],
   },
   {
@@ -45,9 +57,9 @@ const chapters = [
     theme: styles.theme_woad,
     animType: "barbarian",
     images: [
-      { src: woadImg, size: "320px", top: "8%", left: "58%", rotate: 12 },
-      { src: vikingRobeImg, size: "950px", bgSize: "55%", top: "0%", left: "15%", rotate: 0 },
-      { src: woadImg, size: "160px", top: "65%", left: "55%", rotate: 6 },
+      { src: woadImg, size: "320px", top: "8%", left: "58%", mTop: "10%", mLeft: "15%", rotate: 12 },
+      { src: vikingRobeImg, size: "950px", bgSize: "55%", top: "0%", left: "15%", mTop: "35%", mLeft: "80%", rotate: 0 },
+      { src: vikingb, size: "160px", top: "65%", left: "55%", mTop: "80%", mLeft: "25%", rotate: 6 },
     ],
   },
   {
@@ -60,9 +72,9 @@ const chapters = [
     theme: styles.theme_royal,
     animType: "sacred",
     images: [
-      { src: royalImg, size: "750px", top: "5%", left: "30%", rotate: 0 },
-      { src: sceptreImg, size: "550px", top: "15%", left: "50%", rotate: 0 },
-      { src: couronneImg, size: "300px", top: "45%", left: "70%", rotate: -15 },
+      { src: royalImg, size: "750px", top: "5%", left: "30%", mTop: "10%", mLeft: "45%", rotate: 0 },
+      { src: sceptreImg, size: "550px", top: "15%", left: "50%", mTop: "25%", mLeft: "80%", rotate: 0 },
+      { src: couronneImg, size: "300px", top: "45%", left: "70%", mTop: "70%", mLeft: "25%", rotate: -15 },
     ],
   },
   {
@@ -75,9 +87,9 @@ const chapters = [
     theme: styles.theme_denim,
     animType: "industrial",
     images: [
-      { src: denimImg, size: "340px", top: "10%", left: "55%", rotate: -2 },
-      { src: denimImg, size: "200px", top: "58%", left: "74%", rotate: 5 },
-      { src: denimImg, size: "155px", top: "22%", left: "83%", rotate: -8 },
+      { src: denimImg, size: "340px", top: "10%", left: "55%", mTop: "12%", mLeft: "20%", rotate: -2 },
+      { src: jeansImg, size: "200px", top: "58%", left: "74%", mTop: "20%", mLeft: "85%", rotate: 5 },
+      { src: denim2Img, size: "155px", top: "22%", left: "83%", mTop: "78%", mLeft: "15%", rotate: -8 },
     ],
   },
   {
@@ -90,9 +102,9 @@ const chapters = [
     theme: styles.theme_klein,
     animType: "absolute",
     images: [
-      { src: kleinImg, size: "360px", top: "50%", left: "60%", rotate: 0 },
-      { src: kleinImg, size: "180px", top: "12%", left: "72%", rotate: 0 },
-      { src: kleinImg, size: "110px", top: "68%", left: "82%", rotate: 0 },
+      { src: kleinImg, size: "360px", top: "50%", left: "60%", mTop: "20%", mLeft: "75%", rotate: 0 },
+      { src: kleinImg, size: "180px", top: "12%", left: "72%", mTop: "75%", mLeft: "25%", rotate: 0 },
+      { src: kleinImg, size: "110px", top: "68%", left: "82%", mTop: "50%", mLeft: "15%", rotate: 0 },
     ],
   },
   {
@@ -105,9 +117,9 @@ const chapters = [
     theme: styles.theme_navy,
     animType: "digital",
     images: [
-      { src: navyImg, size: "380px", top: "15%", left: "55%", rotate: 0 },
-      { src: gendarmerieImg, size: "600px", top: "55%", left: "10%", rotate: 0 }, // La voiture !
-      { src: securite2Img, size: "220px", top: "10%", left: "15%", rotate: -10 },
+      { src: navyImg, size: "380px", top: "15%", left: "55%", mTop: "15%", mLeft: "80%", rotate: 0 },
+      { src: gendarmerieImg, size: "750px", top: "55%", left: "10%", mTop: "65%", mLeft: "40%", rotate: 0 }, // Plus grande la voiture !
+      { src: securite2Img, size: "220px", top: "10%", left: "15%", mTop: "25%", mLeft: "20%", rotate: -10 },
     ],
   },
 ];
@@ -115,20 +127,29 @@ const chapters = [
 const TOTAL_PANELS = 1 + chapters.length; // 7
 
 function revealImages(floaters: HTMLElement[], animType: string, vh: number) {
+  const isMobile = window.innerWidth <= 768;
+  const baseScale = isMobile ? 0.55 : 1;
+
   floaters.forEach((img, i) => {
     const delay = i * 0.12;
-    gsap.set(img, { opacity: 1 }); // rendre visible avant d'animer
+    
+    // On met à jour les CSS variables --top/--left pour mobile si besoin
+    // L'idée est de laisser le CSS handle la position de base et GSAP le décorréler un peu
+    gsap.set(img, { opacity: 1, scale: baseScale });
 
     switch (animType) {
       // Lapis : révélation par un masque qui monte (comme un voile qui se lève)
       case "ancient":
         gsap.fromTo(
           img,
-          { clipPath: "inset(100% 0% 0% 0%)", y: 30, rotate: (i - 1) * 5 },
+          { clipPath: "inset(100% 0% 0% 0%)", y: 30, rotate: (i - 1) * 5, scale: baseScale * 0.9, xPercent: -50, yPercent: -50 },
           {
             clipPath: "inset(0% 0% 0% 0%)",
             y: 0,
             rotate: 0,
+            scale: baseScale,
+            xPercent: -50,
+            yPercent: -50,
             duration: 1.1 + i * 0.1,
             delay,
             ease: "power3.inOut",
@@ -139,7 +160,7 @@ function revealImages(floaters: HTMLElement[], animType: string, vh: number) {
 
       case "barbarian":
         if (i === 1) {
-          gsap.set(img, { clipPath: "inset(0%)", opacity: 1 });
+          gsap.set(img, { clipPath: "inset(0%)", opacity: 1, xPercent: -50, yPercent: -50 });
           gsap.fromTo(
             img,
             { rotate: 8, transformOrigin: "center center" },
@@ -161,6 +182,8 @@ function revealImages(floaters: HTMLElement[], animType: string, vh: number) {
               skewX: 20,
               rotate: (i % 2 === 0 ? 1 : -1) * 15,
               opacity: 0,
+              xPercent: -50,
+              yPercent: -50,
             },
             {
               clipPath: "inset(0% 0% 0% 0%)",
@@ -168,6 +191,8 @@ function revealImages(floaters: HTMLElement[], animType: string, vh: number) {
               skewX: 0,
               rotate: 0,
               opacity: 1,
+              xPercent: -50,
+              yPercent: -50,
               duration: 0.7,
               delay: delay * 0.7,
               ease: "expo.out",
@@ -181,13 +206,15 @@ function revealImages(floaters: HTMLElement[], animType: string, vh: number) {
         if (i === 0) {
           gsap.fromTo(
             img,
-            { opacity: 0, scale: 0.9, y: 30, filter: "brightness(2) blur(20px)", clipPath: "inset(0%)" },
+            { opacity: 0, scale: baseScale * 0.9, y: 30, filter: "brightness(2) blur(20px)", clipPath: "inset(0%)", xPercent: -50, yPercent: -50 },
             {
               opacity: 0.45,
-              scale: 1,
+              scale: baseScale,
               y: 0,
               clipPath: "inset(0%)",
               filter: "brightness(1) blur(0px)",
+              xPercent: -50,
+              yPercent: -50,
               duration: 3,
               delay: 0.2,
               ease: "power2.out",
@@ -203,6 +230,8 @@ function revealImages(floaters: HTMLElement[], animType: string, vh: number) {
               rotate: (i - 1) * 20,
               filter: "brightness(1.5) blur(5px)",
               clipPath: "inset(0%)",
+              xPercent: -50,
+              yPercent: -50,
             },
             {
               y: 0,
@@ -210,6 +239,8 @@ function revealImages(floaters: HTMLElement[], animType: string, vh: number) {
               clipPath: "inset(0%)",
               rotate: 0,
               filter: "brightness(1) blur(0px)",
+              xPercent: -50,
+              yPercent: -50,
               duration: 4 + i * 1,
               delay: i * 0.5,
               ease: "power1.out",
@@ -222,10 +253,12 @@ function revealImages(floaters: HTMLElement[], animType: string, vh: number) {
       case "industrial":
         gsap.fromTo(
           img,
-          { clipPath: "inset(0% 0% 100% 0%)", y: -50 },
+          { clipPath: "inset(0% 0% 100% 0%)", y: -50, xPercent: -50, yPercent: -50 },
           {
             clipPath: "inset(0% 0% 0% 0%)",
             y: 0,
+            xPercent: -50,
+            yPercent: -50,
             duration: 0.9,
             delay,
             ease: "power4.out",
@@ -237,11 +270,13 @@ function revealImages(floaters: HTMLElement[], animType: string, vh: number) {
       case "absolute":
         gsap.fromTo(
           img,
-          { scale: 0, opacity: 0, filter: "blur(40px) brightness(3)" },
+          { scale: 0, opacity: 0, filter: "blur(40px) brightness(3)", xPercent: -50, yPercent: -50 },
           {
-            scale: 1,
+            scale: baseScale,
             opacity: 1,
             filter: "blur(0px) brightness(1)",
+            xPercent: -50,
+            yPercent: -50,
             duration: 2,
             delay: delay * 0.8,
             ease: "expo.out",
@@ -282,8 +317,8 @@ function revealImages(floaters: HTMLElement[], animType: string, vh: number) {
       default:
         gsap.fromTo(
           img,
-          { opacity: 0, y: 30 },
-          { opacity: 1, y: 0, duration: 1, delay, ease: "power2.out", overwrite: true }
+          { opacity: 0, y: 30, xPercent: -50, yPercent: -50 },
+          { opacity: 1, y: 0, xPercent: -50, yPercent: -50, duration: 1, delay, ease: "power2.out", overwrite: true }
         );
     }
   });
@@ -658,8 +693,8 @@ export default function Blue() {
                       style={{
                         "--size": img.size,
                         "--bg-size": img.bgSize || "contain",
-                        top: img.top,
-                        left: img.left,
+                        "--top": window.innerWidth <= 768 && (img as any).mTop ? (img as any).mTop : img.top,
+                        "--left": window.innerWidth <= 768 && (img as any).mLeft ? (img as any).mLeft : img.left,
                         backgroundImage: `url(${img.src})`,
                       } as React.CSSProperties}
                     />
