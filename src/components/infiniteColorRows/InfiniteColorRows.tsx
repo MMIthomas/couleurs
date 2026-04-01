@@ -284,7 +284,7 @@ export default function InfiniteColorRows() {
       applyTransform();
     } else if (e.key === "Enter") {
       e.preventDefault();
-      infoRef.current?.querySelector<HTMLElement>("button")?.focus();
+      infoRef.current?.querySelector<HTMLElement>("button, [tabindex='0']")?.focus();
       return;
     } else {
       return;
@@ -364,6 +364,8 @@ export default function InfiniteColorRows() {
       <div
         className={styles.viewport}
         ref={viewportRef}
+        role="group"
+        aria-label="Palette de couleurs — Tab pour naviguer, flèches gauche/droite pour défiler"
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
@@ -377,8 +379,10 @@ export default function InfiniteColorRows() {
               role="button"
               tabIndex={0}
               aria-label={`${c.name} ${c.hex}`}
+              aria-pressed={activeColor?.query === c.query}
               style={{ "--color": c.hex } as React.CSSProperties}
               onMouseEnter={() => activate(c)}
+              onClick={() => activate(c)}
               onFocus={(e) => { activeItemRef.current = e.currentTarget; activate(c); }}
               onKeyDown={onKeyDown}
             >
@@ -390,7 +394,6 @@ export default function InfiniteColorRows() {
 
       <div
         className={`${styles.info}${activeColor ? ` ${styles.infoVisible}` : ""}`}
-        aria-live="polite"
         ref={infoRef}
         style={{ "--color": activeColor?.hex ?? "transparent" } as React.CSSProperties}
         onKeyDown={(e) => {
@@ -404,7 +407,7 @@ export default function InfiniteColorRows() {
       >
         <div className={styles.infoText}>
           <div className={styles.hexRow}>
-            <span className={styles.hex}>{displayHex}</span>
+            <span className={styles.hex} aria-live="polite" aria-atomic="true">{displayHex}</span>
             <button
               className={styles.copyBtn}
               onClick={() => activeColor && copy(activeColor.hex, "hex")}
@@ -414,7 +417,7 @@ export default function InfiniteColorRows() {
               {copiedKey === "hex" ? <CheckIcon /> : <CopyIcon />}
             </button>
           </div>
-          <span className={styles.colorName}>{displayName}</span>
+          <span className={styles.colorName} aria-live="polite" aria-atomic="true">{displayName}</span>
           {activeColor && (
             <div className={styles.variants}>
               {([
@@ -439,7 +442,12 @@ export default function InfiniteColorRows() {
         </div>
         <div className={styles.photos}>
           {(photos[activeColor?.query ?? ""] ?? []).map((src, j) => (
-            <img key={`${activeColor?.query}-${j}`} src={src} alt={activeColor?.name} loading="lazy" />
+            <img
+              key={`${activeColor?.query}-${j}`}
+              src={src}
+              alt={`${activeColor?.name} – photo ${j + 1} sur ${photos[activeColor?.query ?? ""]?.length ?? 6}`}
+              loading="lazy"
+            />
           ))}
         </div>
       </div>

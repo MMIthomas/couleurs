@@ -13,7 +13,7 @@ $purple-main: #7e3fe0;
   &__text {
     position: relative;
     z-index: 2;
-    font-size: 5rem;
+    font-size: clamp(1.8rem, 6vw, 5rem);
     font-weight: 800;
     font-family: "Hind", sans-serif;
     color: $purple-main;
@@ -33,33 +33,38 @@ $purple-main: #7e3fe0;
   overflow: hidden;
   cursor: pointer;
   z-index: 1;
+
+  &:focus-visible {
+    outline: 3px solid #fff;
+    outline-offset: 4px;
+  }
 }
 
 .wrapTL {
   top: 6%;
   left: 4%;
-  width: 420px;
+  width: clamp(130px, 38vw, 420px);
   rotate: -6deg;
 }
 
 .wrapTR {
   top: 6%;
   right: 4%;
-  width: 420px;
+  width: clamp(130px, 38vw, 420px);
   rotate: 5deg;
 }
 
 .wrapBL {
   bottom: 6%;
   left: 4%;
-  width: 300px;
+  width: clamp(100px, 27vw, 300px);
   rotate: 4deg;
 }
 
 .wrapBR {
   bottom: 6%;
   right: 4%;
-  width: 420px;
+  width: clamp(130px, 38vw, 420px);
   rotate: -5deg;
 }
 

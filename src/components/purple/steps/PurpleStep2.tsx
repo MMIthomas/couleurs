@@ -43,11 +43,15 @@ const PurpleStep2 = forwardRef<PurpleStep2Refs>((_, ref) => {
 
   return (
     <div className={styles.purple__step2} ref={containerRef}>
-      <p className={styles.purple__step2__text} ref={text}>
-        <span className={styles.mask}>
+      <p
+        className={styles.purple__step2__text}
+        ref={text}
+        aria-label="Une fleur ou une pierre ?"
+      >
+        <span className={styles.mask} aria-hidden="true">
           <span ref={une}>Une</span>
         </span>{" "}
-        <span className={styles.stickerWrapper} ref={stickerWrapper}>
+        <span className={styles.stickerWrapper} ref={stickerWrapper} aria-hidden="true">
           <span className={styles.sticker} ref={fleurSticker}>
             fleur
           </span>
@@ -58,19 +62,19 @@ const PurpleStep2 = forwardRef<PurpleStep2Refs>((_, ref) => {
             pierre
           </span>
         </span>{" "}
-        <span className={styles.mask}>
+        <span className={styles.mask} aria-hidden="true">
           <span ref={questionMark}>?</span>
         </span>
       </p>
       <img
         src={lavande}
-        alt="Lavande"
+        alt="Fleur de lavande"
         className={styles.purple__step2__flower}
         ref={flower}
       />
       <img
         src={pierre}
-        alt="Améthyste"
+        alt="Pierre d'améthyste"
         className={styles.purple__step2__pierre}
         ref={amethyst}
       />

@@ -80,15 +80,34 @@ const PurpleStep3 = forwardRef<PurpleStep3Refs>((_, ref) => {
           key={i}
           className={`${styles.imgWrapper} ${wrapClass}`}
           ref={wrapRefs[i]}
+          role="button"
+          tabIndex={0}
+          aria-label={IMAGES[i].text}
           onMouseEnter={() => handleEnter(wrapRefs[i].current!, origin)}
           onMouseLeave={() => handleLeave(wrapRefs[i].current!, origin)}
+          onFocus={() => handleEnter(wrapRefs[i].current!, origin)}
+          onBlur={() => handleLeave(wrapRefs[i].current!, origin)}
+          onTouchStart={() => handleEnter(wrapRefs[i].current!, origin)}
+          onTouchEnd={() => handleLeave(wrapRefs[i].current!, origin)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              handleEnter(wrapRefs[i].current!, origin);
+            }
+          }}
+          onKeyUp={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              handleLeave(wrapRefs[i].current!, origin);
+            }
+          }}
         >
           <img
             src={`https://picsum.photos/seed/${IMAGES[i].seed}/${IMAGES[i].w}/${IMAGES[i].h}`}
             alt=""
+            aria-hidden="true"
             className={`${styles.img} ${imgClass}`}
           />
-          <div className={styles.overlay}>
+          <div className={styles.overlay} aria-hidden="true">
             <p className={styles.overlayText}>{IMAGES[i].text}</p>
           </div>
         </div>
