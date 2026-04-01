@@ -31,6 +31,9 @@ export default function Red() {
     CustomEase.create("float", "M0,0 C0.25,0.1 0.3,1 1,1");
 
     const split = SplitText.create(text, { type: "chars,words" });
+    const triggers: ScrollTrigger[] = [];
+
+    gsap.set(container, { xPercent: 0 });
 
     gsap.set(container, { xPercent: 100 });
 
@@ -41,8 +44,8 @@ export default function Red() {
         trigger: wrapper,
         pin: true,
         scrub: true,
-        end: () => `+=${container.scrollWidth}`,
-        anticipatePin: 1,
+        end: () => `+=${container.scrollWidth - window.innerWidth}`,
+        onUpdate: (self) => { triggers[0] = self; },
       },
     });
 
