@@ -64,8 +64,8 @@ export function buildStep2Enter(
     .set([step2.stickerWrapper, step2.container], { overflow: "visible" }, "pierreZoom")
     .set(step2.fleurSticker, { opacity: 0 }, "pierreZoom")
     .to(step2.pierreSticker, {
-      scale: 50,
-      x: 2500,
+      scale: 80,
+      x: 2800,
       rotation: 90,
       borderRadius: 0,
       duration: 2,

@@ -22,6 +22,7 @@ export default function Purple() {
   const step1Ref = useRef<PurpleStep1Refs>(null);
   const step2Ref = useRef<PurpleStep2Refs>(null);
   const step3Ref = useRef<PurpleStep3Refs>(null);
+  const scrollBarRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
@@ -48,6 +49,8 @@ export default function Purple() {
       buildStep2Enter(tl, step2, widths);
       buildStep3Enter(tl, step3, split3);
 
+      tl.to(scrollBarRef.current, { opacity: 0, duration: 0.3, ease: "power2.in" }, "step3Enter");
+
       return () => {
         split1.revert();
         split3.revert();
@@ -63,7 +66,9 @@ export default function Purple() {
         <PurpleStep2 ref={step2Ref} />
         <PurpleStep3 ref={step3Ref} />
       </div>
-      <ScrollBar container={container} />
+      <div ref={scrollBarRef}>
+        <ScrollBar container={container} />
+      </div>
     </section>
   );
 }
