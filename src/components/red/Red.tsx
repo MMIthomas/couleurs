@@ -224,7 +224,6 @@ export default function Red() {
         };
       };
 
-      // Repositionne d'abord le centre sur "rouge" sans changer le rayon
       tl.to(bg, {
         clipPath: () => {
           const { cx, cy } = getCenter();
@@ -234,7 +233,6 @@ export default function Red() {
         duration: 0.01,
       }, "<");
 
-      // Puis rétrécit depuis cette position
       tl.to(bg, {
         clipPath: () => {
           const { cx, cy } = getCenter();
