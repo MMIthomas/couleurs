@@ -1,4 +1,3 @@
-import { useRef } from "react";
 import styles from "./ColorCard.module.scss";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";

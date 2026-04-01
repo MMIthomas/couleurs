@@ -30,8 +30,10 @@ export default function Purple() {
       const step2 = step2Ref.current!;
       const step3 = step3Ref.current!;
 
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
       const split1 = initStep1(step1);
-      const widths = initStep2(step2);
+      const widths = initStep2(step2, reducedMotion);
       const split3 = initStep3(step3);
 
       const tl = gsap.timeline({
@@ -44,10 +46,10 @@ export default function Purple() {
         },
       });
 
-      buildStep1Enter(tl, split1, step1);
-      buildStep1Exit(tl, split1, step1);
-      buildStep2Enter(tl, step2, widths);
-      buildStep3Enter(tl, step3, split3);
+      buildStep1Enter(tl, split1, step1, reducedMotion);
+      buildStep1Exit(tl, split1, step1, reducedMotion);
+      buildStep2Enter(tl, step2, widths, reducedMotion);
+      buildStep3Enter(tl, step3, split3, reducedMotion);
 
       tl.to(scrollBarRef.current, { opacity: 0, duration: 0.3, ease: "power2.in" }, "step3Enter");
 
@@ -60,13 +62,13 @@ export default function Purple() {
   );
 
   return (
-    <section className={styles.purple} ref={container}>
+    <section className={styles.purple} ref={container} aria-label="Le violet — émotions et associations">
       <div className={styles.purple__steps} ref={stepsWrapper}>
         <PurpleStep1 ref={step1Ref} />
         <PurpleStep2 ref={step2Ref} />
         <PurpleStep3 ref={step3Ref} />
       </div>
-      <div ref={scrollBarRef}>
+      <div ref={scrollBarRef} aria-hidden="true">
         <ScrollBar container={container} />
       </div>
     </section>

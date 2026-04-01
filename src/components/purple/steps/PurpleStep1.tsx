@@ -25,8 +25,8 @@ const PurpleStep1 = forwardRef<PurpleStep1Refs>((_, ref) => {
   }));
 
   return (
-    <div className={styles.purple__title} ref={containerRef}>
-      <div className={styles.purple__title__wrapper}>
+    <div className={styles.purple__title} ref={containerRef} role="heading" aria-level={2} aria-label="Ça vous évoque quoi, le violet ?">
+      <div className={styles.purple__title__wrapper} aria-hidden="true">
         <div className={styles.purple__title__wrapper__top} ref={questionWrapper}>
           <span ref={questionText}>Ça vous évoque quoi</span>
         </div>

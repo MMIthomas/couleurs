@@ -26,4 +26,9 @@
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
     transform: translateX(-3px);
   }
+
+  &:focus-visible {
+    outline: 3px solid #111;
+    outline-offset: 4px;
+  }
 }

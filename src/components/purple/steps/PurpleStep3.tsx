@@ -2,6 +2,9 @@ import { forwardRef, useImperativeHandle, useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import styles from "./PurpleStep3.module.scss";
+import imgLandscape from "../../../assets/images/landscape.png";
+import imgArt from "../../../assets/images/art.avif";
+import imgRetro from "../../../assets/images/retro_vibe.jpg";
 
 export interface PurpleStep3Refs {
   container: HTMLDivElement;
@@ -13,10 +16,10 @@ export interface PurpleStep3Refs {
 }
 
 const IMAGES = [
-  { seed: "aaa", w: 600, h: 400, text: "Une teinte chaude qui évoque la passion et la chaleur du soleil couchant." },
-  { seed: "bbb", w: 600, h: 400, text: "Les nuances froides apaisent et invitent à la contemplation profonde." },
-  { seed: "ccc", w: 400, h: 600, text: "Un camaïeu de tons naturels, ancré dans la douceur de la terre." },
-  { seed: "ddd", w: 600, h: 400, text: "La lumière filtrée révèle des émotions que les mots peinent à saisir." },
+  { src: imgLandscape, text: "Le violet des paysages du monde des rêves" },
+  { src: imgArt, text: "Le violet a une puissance émotionnelle unique. On ressent cela dans l'art" },
+  { src: imgRetro, text: "Les néons violets de la nuit synthwave, les souvenirs d'une époque révolue" },
+  { src: "https://cdn.stocksnap.io/img-thumbs/960w/purple-pink_OPUZIGPN2J.jpg", text: "Quand la couleur jaillit sans retenue, elle révèle ce que les mots ne peuvent pas dire" },
 ];
 
 const CORNERS: { wrapClass: string; imgClass: string; origin: string }[] = [
@@ -62,7 +65,7 @@ const PurpleStep3 = forwardRef<PurpleStep3Refs>((_, ref) => {
     const overlay = wrap.querySelector<HTMLElement>(`.${styles.overlay}`)!;
     const text    = wrap.querySelector<HTMLElement>(`.${styles.overlayText}`)!;
     gsap.to(wrap,    { scale: 1, duration: 0.55, ease: "power3.inOut", transformOrigin: origin,
-                       onComplete: () => gsap.set(wrap, { zIndex: 1 }) });
+                       onComplete: () => { gsap.set(wrap, { zIndex: 1 }); } });
     gsap.to(overlay, { clipPath: "inset(100% 0 0% 0 round 16px)", duration: 0.45, ease: "power2.in" });
     gsap.to(text,    { y: 20, opacity: 0, duration: 0.25, ease: "power2.in" });
   });
@@ -80,15 +83,34 @@ const PurpleStep3 = forwardRef<PurpleStep3Refs>((_, ref) => {
           key={i}
           className={`${styles.imgWrapper} ${wrapClass}`}
           ref={wrapRefs[i]}
+          role="button"
+          tabIndex={0}
+          aria-label={IMAGES[i].text}
           onMouseEnter={() => handleEnter(wrapRefs[i].current!, origin)}
           onMouseLeave={() => handleLeave(wrapRefs[i].current!, origin)}
+          onFocus={() => handleEnter(wrapRefs[i].current!, origin)}
+          onBlur={() => handleLeave(wrapRefs[i].current!, origin)}
+          onTouchStart={() => handleEnter(wrapRefs[i].current!, origin)}
+          onTouchEnd={() => handleLeave(wrapRefs[i].current!, origin)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              handleEnter(wrapRefs[i].current!, origin);
+            }
+          }}
+          onKeyUp={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              handleLeave(wrapRefs[i].current!, origin);
+            }
+          }}
         >
           <img
-            src={`https://picsum.photos/seed/${IMAGES[i].seed}/${IMAGES[i].w}/${IMAGES[i].h}`}
+            src={IMAGES[i].src}
             alt=""
+            aria-hidden="true"
             className={`${styles.img} ${imgClass}`}
           />
-          <div className={styles.overlay}>
+          <div className={styles.overlay} aria-hidden="true">
             <p className={styles.overlayText}>{IMAGES[i].text}</p>
           </div>
         </div>

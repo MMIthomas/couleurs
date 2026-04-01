@@ -1,0 +1,25 @@
+.overlayWrapper {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.barsContainer {
+  position: relative;
+  flex-shrink: 0;
+  width: 160vmax;
+  height: 160vmax;
+  transform: rotate(45deg);
+}
+
+.bar {
+  position: absolute;
+  top: 0;
+  height: 0;
+  pointer-events: auto;
+}
