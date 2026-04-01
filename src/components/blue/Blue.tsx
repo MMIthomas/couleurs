@@ -46,7 +46,7 @@ const chapters = [
     animType: "barbarian",
     images: [
       { src: woadImg, size: "320px", top: "8%", left: "58%", rotate: 12 },
-      { src: vikingRobeImg, size: "950px", bgSize: "55%", top: "0%", left: "15%", rotate: 0 }, // Encore plus à droite pour éviter la coupe à gauche
+      { src: vikingRobeImg, size: "950px", bgSize: "55%", top: "0%", left: "15%", rotate: 0 },
       { src: woadImg, size: "160px", top: "65%", left: "55%", rotate: 6 },
     ],
   },
@@ -114,12 +114,6 @@ const chapters = [
 
 const TOTAL_PANELS = 1 + chapters.length; // 7
 
-// ─── Helpers d'animation images ───────────────────────────────────────────────
-
-/**
- * Reveal les images à l'entrée d'un panneau, avec une mise en scène propre à chaque thème.
- * Chaque animType a sa logique visuelle : masque, rotation, stagger, etc.
- */
 function revealImages(floaters: HTMLElement[], animType: string, vh: number) {
   floaters.forEach((img, i) => {
     const delay = i * 0.12;
@@ -143,10 +137,8 @@ function revealImages(floaters: HTMLElement[], animType: string, vh: number) {
         );
         break;
 
-      // Woad : jet violent, pas d'élégance + balancement pour la robe
       case "barbarian":
         if (i === 1) {
-          // La robe viking : balancement SACADÉ (visible tout le temps, derrière tout)
           gsap.set(img, { clipPath: "inset(0%)", opacity: 1 });
           gsap.fromTo(
             img,
@@ -185,15 +177,13 @@ function revealImages(floaters: HTMLElement[], animType: string, vh: number) {
         }
         break;
 
-      // Royal : chute majestueuse depuis le ciel (sauf le premier qui sert de décor)
       case "sacred":
         if (i === 0) {
-          // Le décor (tissu)
           gsap.fromTo(
             img,
             { opacity: 0, scale: 0.9, y: 30, filter: "brightness(2) blur(20px)", clipPath: "inset(0%)" },
             {
-              opacity: 0.45, // Légèrement plus visible
+              opacity: 0.45,
               scale: 1,
               y: 0,
               clipPath: "inset(0%)",
@@ -205,11 +195,10 @@ function revealImages(floaters: HTMLElement[], animType: string, vh: number) {
             }
           );
         } else {
-          // Les couronnes qui tombent LENTEMENT
           gsap.fromTo(
             img,
             {
-              y: -vh, // Tombe de tout en haut
+              y: -vh,
               opacity: 0,
               rotate: (i - 1) * 20,
               filter: "brightness(1.5) blur(5px)",
@@ -221,16 +210,15 @@ function revealImages(floaters: HTMLElement[], animType: string, vh: number) {
               clipPath: "inset(0%)",
               rotate: 0,
               filter: "brightness(1) blur(0px)",
-              duration: 4 + i * 1, // Très lent
+              duration: 4 + i * 1,
               delay: i * 0.5,
-              ease: "power1.out", // Plus fluide, moins de rebond brutal
+              ease: "power1.out",
               overwrite: true,
             }
           );
         }
         break;
 
-      // Denim : chute directe, efficace, comme une pièce de tissu posée
       case "industrial":
         gsap.fromTo(
           img,
@@ -246,7 +234,6 @@ function revealImages(floaters: HTMLElement[], animType: string, vh: number) {
         );
         break;
 
-      // Klein : apparition depuis rien, le vide qui se matérialise
       case "absolute":
         gsap.fromTo(
           img,
@@ -263,10 +250,8 @@ function revealImages(floaters: HTMLElement[], animType: string, vh: number) {
         );
         break;
 
-      // Navy / Digital : slide depuis la droite, précis, mécanique
       case "digital":
         if (i === 1) {
-          // La voiture de gendarmerie : elle roule de droite à gauche
           gsap.fromTo(
             img,
             { xPercent: 150, opacity: 1, clipPath: "inset(0%)" },
@@ -304,16 +289,12 @@ function revealImages(floaters: HTMLElement[], animType: string, vh: number) {
   });
 }
 
-/**
- * Cache les images à la sortie d'un panneau, vite et proprement.
- */
 function hideImages(floaters: HTMLElement[], animType: string) {
   floaters.forEach((img, i) => {
-    gsap.killTweensOf(img); // Arrête toute animation en cours (dont l'oscillation infinie)
+    gsap.killTweensOf(img);
     const delay = i * 0.04;
 
     if (animType === "barbarian") {
-      // Woad : disparition brutale vers la gauche
       gsap.to(img, {
         clipPath: "inset(0% 0% 0% 100%)",
         x: -60,
@@ -324,7 +305,6 @@ function hideImages(floaters: HTMLElement[], animType: string) {
         onComplete: () => { gsap.set(img, { opacity: 0 }); },
       });
     } else if (animType === "absolute") {
-      // Klein : dissolution
       gsap.to(img, {
         scale: 0.8,
         opacity: 0,
@@ -335,7 +315,6 @@ function hideImages(floaters: HTMLElement[], animType: string) {
         overwrite: true,
       });
     } else {
-      // Par défaut : fondu rapide
       gsap.to(img, {
         opacity: 0,
         y: -20,
@@ -347,8 +326,6 @@ function hideImages(floaters: HTMLElement[], animType: string) {
     }
   });
 }
-
-// ─── Composant ────────────────────────────────────────────────────────────────
 
 export default function Blue() {
   const outerRef = useRef<HTMLDivElement>(null);
@@ -374,7 +351,6 @@ export default function Blue() {
       return title ? new SplitText(title, { type: "words,chars", wordsClass: styles.word }) : null;
     });
 
-    // ── Refs éléments par panneau ──────────────────────────────────────────────
     const chapterEls = chapters.map((ch, i) => {
       const sec = q(`.${styles.section}`)[i + 1] as HTMLElement;
       if (!sec) return null;
@@ -390,18 +366,15 @@ export default function Blue() {
 
     const animStates = new Array(chapters.length + 1).fill("none");
 
-    // ── Hint scroll ────────────────────────────────────────────────────────────
     const hint = q(`.${styles.scroll_hint}`)[0];
     if (hint) {
       gsap.from(hint, { y: 20, opacity: 0, duration: 1, delay: 1, ease: "power3.out" });
       gsap.to(hint, { y: 10, duration: 1.5, repeat: -1, yoyo: true, ease: "sine.inOut" });
     }
 
-    // ── Wandering subtil : lent et organique ───────────────────────────────────
     chapterEls.forEach((el) => {
       if (!el) return;
       el.floaters.forEach((img, idx) => {
-        // Dérive lente en fond, parallaxe passive
         gsap.to(img, {
           x: `random(-18, 18)`,
           y: `random(-22, 22)`,
@@ -423,14 +396,12 @@ export default function Blue() {
         ),
         { opacity: 0 }
       );
-      // Cacher aussi toutes les images
       chapterEls.forEach((el) => {
         if (!el) return;
         gsap.set(el.floaters, { opacity: 0 });
       });
     }
 
-    // ── Boucle de mise à jour ─────────────────────────────────────────────────
     function update() {
       if (!outer || !sticky || !wrapper || !prog) return;
 
@@ -441,7 +412,6 @@ export default function Blue() {
       const scrollDist = (TOTAL_PANELS - 1) * vh;
       const maxX = (TOTAL_PANELS - 1) * vw;
 
-      // Avant la section
       if (outerTop > 0) {
         if (sticky.style.position !== "relative")
           Object.assign(sticky.style, { position: "relative", top: "0", left: "0", width: "100%" });
@@ -451,7 +421,6 @@ export default function Blue() {
         return;
       }
 
-      // Après la section
       if (-outerTop >= scrollDist) {
         if (sticky.style.position !== "absolute")
           Object.assign(sticky.style, {
@@ -477,10 +446,9 @@ export default function Blue() {
       gsap.set(wrapper, { x: -maxX * progress });
       gsap.set(prog, { scaleX: progress });
 
-      // ── Storytelling par panneau ─────────────────────────────────────────────
       for (let i = -1; i < chapters.length; i++) {
         const center = (i + 1) / (TOTAL_PANELS - 1);
-        const range = 0.45 / (TOTAL_PANELS - 1); // Slightly tighter range to avoid overlap issues
+        const range = 0.45 / (TOTAL_PANELS - 1);
         const isActive = Math.abs(progress - center) < range;
         const stateIdx = i + 1;
         const el =
@@ -489,7 +457,6 @@ export default function Blue() {
             : chapterEls[i];
         if (!el) continue;
 
-        // ── Entrée ──────────────────────────────────────────────────────────────
         if (isActive && animStates[stateIdx] !== "active") {
           animStates[stateIdx] = "active";
 
@@ -500,7 +467,6 @@ export default function Blue() {
                 ? q(`.${styles.intro__title}`)
                 : q(`.${styles.chapter__title}`)[i];
 
-          // Texte principal
           switch (el.type) {
             case "intro":
               gsap.fromTo(
@@ -553,7 +519,6 @@ export default function Blue() {
               break;
           }
 
-          // Éléments UI communs
           if (el.desc)
             gsap.to(el.desc, { opacity: 1, y: 0, duration: 1, delay: 0.4, ease: "power3.out", overwrite: true });
           if (el.meta)
@@ -568,13 +533,11 @@ export default function Blue() {
               overwrite: true,
             });
 
-          // Images — reveal thématique
           if (el.floaters.length > 0) {
             revealImages(el.floaters, el.type, vh);
           }
         }
 
-        // ── Sortie ──────────────────────────────────────────────────────────────
         else if (!isActive && animStates[stateIdx] === "active") {
           animStates[stateIdx] = "none";
 
@@ -606,7 +569,6 @@ export default function Blue() {
           if (el.symbol)
             gsap.to(el.symbol, { opacity: 0, scale: 0.5, duration: 0.4, overwrite: true });
 
-          // Images — hide
           if (el.floaters.length > 0) {
             hideImages(el.floaters, el.type);
           }
@@ -614,7 +576,6 @@ export default function Blue() {
       }
     }
 
-    // ── Scroll listener ────────────────────────────────────────────────────────
     let ticking = false;
     function onScroll() {
       if (!ticking) {
@@ -637,8 +598,6 @@ export default function Blue() {
       chapterSplits.forEach((s) => s?.revert());
     };
   }, { scope: outerRef });
-
-  // ─── JSX ────────────────────────────────────────────────────────────────────
 
   return (
     <div
