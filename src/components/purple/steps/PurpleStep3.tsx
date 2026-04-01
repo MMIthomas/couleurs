@@ -65,7 +65,7 @@ const PurpleStep3 = forwardRef<PurpleStep3Refs>((_, ref) => {
     const overlay = wrap.querySelector<HTMLElement>(`.${styles.overlay}`)!;
     const text    = wrap.querySelector<HTMLElement>(`.${styles.overlayText}`)!;
     gsap.to(wrap,    { scale: 1, duration: 0.55, ease: "power3.inOut", transformOrigin: origin,
-                       onComplete: () => gsap.set(wrap, { zIndex: 1 }) });
+                       onComplete: () => { gsap.set(wrap, { zIndex: 1 }); } });
     gsap.to(overlay, { clipPath: "inset(100% 0 0% 0 round 16px)", duration: 0.45, ease: "power2.in" });
     gsap.to(text,    { y: 20, opacity: 0, duration: 0.25, ease: "power2.in" });
   });

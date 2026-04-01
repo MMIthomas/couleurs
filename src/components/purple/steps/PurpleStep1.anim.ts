@@ -1,4 +1,3 @@
-import gsap from "gsap";
 import { SplitText } from "gsap/SplitText";
 import type { PurpleStep1Refs } from "./PurpleStep1";
 
